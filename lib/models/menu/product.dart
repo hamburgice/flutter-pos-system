@@ -92,33 +92,18 @@ class Product extends Model<ProductObject>
       imagePath: object.imagePath,
       createdAt: object.createdAt,
       searchedAt: object.searchedAt,
-      ingredients: {
-        for (var ingredient in ingredients) ingredient!.id: ingredient,
-      },
+      ingredients: {for (var ingredient in ingredients) ingredient!.id: ingredient},
     )..prepareItem();
   }
 
-  factory Product.fromRow(
-    Product? ori,
-    List<String> row, {
-    required int index,
-  }) {
+  factory Product.fromRow(Product? ori, List<String> row, {required int index}) {
     final num price = .parse(row[2]);
     final num cost = .parse(row[3]);
     final status = ori == null
         ? ModelStatus.staged
-        : (price == ori.price && cost == ori.cost
-              ? ModelStatus.normal
-              : ModelStatus.updated);
+        : (price == ori.price && cost == ori.cost ? ModelStatus.normal : ModelStatus.updated);
 
-    return Product(
-      id: ori?.id,
-      name: row[1],
-      index: index,
-      price: price,
-      cost: cost,
-      status: status,
-    );
+    return Product(id: ori?.id, name: row[1], index: index, price: price, cost: cost, status: status);
   }
 
   @override
@@ -136,19 +121,13 @@ class Product extends Model<ProductObject>
   }
 
   ProductMatch getItemsSimilarity(String pattern) {
-    final match = ProductMatch(
-      product: this,
-      score: getSimilarity(pattern) * 1.5,
-    );
+    final match = ProductMatch(product: this, score: getSimilarity(pattern) * 1.5);
     if (match.score > 0) {
       return match;
     }
 
     for (final ingredient in items) {
-      match.mayIngredient(
-        ingredient,
-        ingredient.getSimilarity(pattern).toDouble(),
-      );
+      match.mayIngredient(ingredient, ingredient.getSimilarity(pattern).toDouble());
       for (final quantity in ingredient.items) {
         match.mayQuantity(quantity, quantity.getSimilarity(pattern).toDouble());
       }
@@ -190,17 +169,10 @@ class ProductMatch {
   ProductQuantity? quantityMatched;
   double score;
 
-  ProductMatch({
-    required this.product,
-    this.ingredientMatched,
-    this.quantityMatched,
-    this.score = 0,
-  });
+  ProductMatch({required this.product, this.ingredientMatched, this.quantityMatched, this.score = 0});
 
   String? get detailedName => ingredientMatched?.name ?? quantityMatched?.name;
-  String? get detailedType => ingredientMatched != null
-      ? 'ingredient'
-      : (quantityMatched != null ? 'quantity' : null);
+  String? get detailedType => ingredientMatched != null ? 'ingredient' : (quantityMatched != null ? 'quantity' : null);
 
   void mayIngredient(ProductIngredient ingredient, double score) {
     if (score > this.score) {

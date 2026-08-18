@@ -7,9 +7,7 @@ const dbMigrationUp = <int, List<String>>{
 );
 ''',
   ],
-  6: <String>[
-    'ALTER TABLE `order_stash` ADD COLUMN `encodedAttributes` BLOB DEFAULT "";',
-  ],
+  6: <String>['ALTER TABLE `order_stash` ADD COLUMN `encodedAttributes` BLOB DEFAULT "";'],
   8: <String>[
     '''CREATE TABLE `order_records` (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,7 +61,5 @@ const dbMigrationUp = <int, List<String>>{
     '''ALTER TABLE `order_records` ADD COLUMN `periodSeq` INTEGER DEFAULT 0;''',
     '''UPDATE order_records SET `periodSeq` = `id`;''',
   ],
-  11: <String>[
-    '''ALTER TABLE `order_products` ADD COLUMN `vatRate` REAL NOT NULL DEFAULT 7;''',
-  ],
+  11: <String>['''ALTER TABLE `order_products` ADD COLUMN `vatRate` REAL NOT NULL DEFAULT 7;'''],
 };

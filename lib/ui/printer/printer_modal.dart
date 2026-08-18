@@ -26,8 +26,7 @@ class PrinterModal extends StatefulWidget {
   State<PrinterModal> createState() => _PrinterModalState();
 }
 
-class _PrinterModalState extends State<PrinterModal>
-    with ItemModal<PrinterModal> {
+class _PrinterModalState extends State<PrinterModal> with ItemModal<PrinterModal> {
   Printer? printer;
 
   // scan variable
@@ -42,8 +41,7 @@ class _PrinterModalState extends State<PrinterModal>
   final nameFocusNode = FocusNode();
 
   @override
-  String get title =>
-      widget.isNew ? S.printerTitleCreate : S.printerTitleUpdate;
+  String get title => widget.isNew ? S.printerTitleCreate : S.printerTitleUpdate;
 
   @override
   List<Widget> buildFormFields() {
@@ -78,9 +76,7 @@ class _PrinterModalState extends State<PrinterModal>
       if (widget.isNew)
         Row(
           mainAxisAlignment: .end,
-          children: [
-            TextButton(onPressed: scan, child: Text(S.printerScanRetry)),
-          ],
+          children: [TextButton(onPressed: scan, child: Text(S.printerScanRetry))],
         ),
       PrinterView(printer: printer!),
       // Add printer type change button
@@ -106,11 +102,7 @@ class _PrinterModalState extends State<PrinterModal>
             filled: false,
           ),
           maxLength: 30,
-          validator: Validator.textLimit(
-            S.printerNameLabel,
-            30,
-            focusNode: nameFocusNode,
-          ),
+          validator: Validator.textLimit(S.printerNameLabel, 30, focusNode: nameFocusNode),
         ),
       ),
       CheckboxListTile(
@@ -127,9 +119,7 @@ class _PrinterModalState extends State<PrinterModal>
   Widget _buildDeviceTile(BluetoothDevice device) {
     final exist = Printers.instance.hasAddress(device.address);
     return ListTile(
-      title: device.name == ''
-          ? const HintText('<unknown>')
-          : Text(device.name),
+      title: device.name == '' ? const HintText('<unknown>') : Text(device.name),
       subtitle: MetaBlock.withString(context, [
         if (device.connected) S.printerMetaConnected,
         if (exist) S.printerMetaExist,
@@ -235,18 +225,11 @@ class _PrinterModalState extends State<PrinterModal>
     provider ??= await _ManualTypeSelection.show(context);
 
     if (provider != null) {
-      Log.out(
-        'select device: ${device.name} provider: ${provider.name}',
-        'printer_modal_select',
-      );
+      Log.out('select device: ${device.name} provider: ${provider.name}', 'printer_modal_select');
 
       // advertise name is the default name
       nameController.text = device.name;
-      printer = Printer(
-        name: device.name,
-        address: device.address,
-        provider: provider,
-      );
+      printer = Printer(name: device.name, address: device.address, provider: provider);
 
       scanDone();
       Bluetooth.instance.stopScan();
@@ -254,27 +237,13 @@ class _PrinterModalState extends State<PrinterModal>
   }
 
   Future<void> changeProvider() async {
-    final provider = await _ManualTypeSelection.show(
-      context,
-      initial: printer?.provider,
-    );
+    final provider = await _ManualTypeSelection.show(context, initial: printer?.provider);
 
-    if (mounted &&
-        provider != null &&
-        printer != null &&
-        provider != printer!.provider) {
-      Log.ger('printer_modal_change_type', {
-        'from': printer?.provider.name,
-        'to': provider.name,
-      });
+    if (mounted && provider != null && printer != null && provider != printer!.provider) {
+      Log.ger('printer_modal_change_type', {'from': printer?.provider.name, 'to': provider.name});
 
       setState(() {
-        printer = Printer(
-          name: printer!.name,
-          address: printer!.address,
-          provider: provider,
-          other: printer!.p,
-        );
+        printer = Printer(name: printer!.name, address: printer!.address, provider: provider, other: printer!.p);
       });
     }
   }
@@ -321,10 +290,7 @@ class _ManualTypeSelection extends StatefulWidget {
 
   const _ManualTypeSelection({super.key, this.initial});
 
-  static Future<PrinterProvider?> show(
-    BuildContext context, {
-    PrinterProvider? initial,
-  }) async {
+  static Future<PrinterProvider?> show(BuildContext context, {PrinterProvider? initial}) async {
     final key = GlobalKey<_ManualTypeSelectionState>();
     return showDialog<PrinterProvider>(
       context: context,
@@ -343,8 +309,7 @@ class _ManualTypeSelection extends StatefulWidget {
         actions: [
           PopButton(title: MaterialLocalizations.of(context).cancelButtonLabel),
           TextButton(
-            onPressed: () =>
-                Navigator.of(context).pop(key.currentState?.selected),
+            onPressed: () => Navigator.of(context).pop(key.currentState?.selected),
             child: Text(MaterialLocalizations.of(context).okButtonLabel),
           ),
         ],
@@ -373,10 +338,7 @@ class _ManualTypeSelectionState extends State<_ManualTypeSelection> {
       child: Column(
         children: [
           for (final provider in PrinterProvider.values)
-            RadioListTile(
-              value: provider,
-              title: Text(S.printerTypeSelectName(provider.name)),
-            ),
+            RadioListTile(value: provider, title: Text(S.printerTypeSelectName(provider.name))),
         ],
       ),
     );

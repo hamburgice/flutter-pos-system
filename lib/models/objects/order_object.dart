@@ -70,9 +70,7 @@ class OrderObject extends _Object {
   num get change => paid - price;
 
   num grossAt(num vatRate) {
-    final grossProducts = products
-        .where((e) => e.vatRate == vatRate)
-        .fold<num>(0, (sum, e) => sum + e.totalPrice);
+    final grossProducts = products.where((e) => e.vatRate == vatRate).fold<num>(0, (sum, e) => sum + e.totalPrice);
     if (productsPrice == 0) return grossProducts;
     return grossProducts * price / productsPrice;
   }
@@ -96,8 +94,7 @@ class OrderObject extends _Object {
         singlePrice: object.singlePrice,
         quantities: {
           for (final item in object.ingredients)
-            if (item.productQuantityId != null)
-              item.productIngredientId: item.productQuantityId!,
+            if (item.productQuantityId != null) item.productIngredientId: item.productQuantityId!,
         },
       );
     }
@@ -106,17 +103,14 @@ class OrderObject extends _Object {
   /// Get [attributes] as map.
   ///
   /// Help to restore from stash.
-  Map<String, String> get selectedAttributes => {
-    for (final attr in attributes) attr.attributeId: attr.optionId,
-  };
+  Map<String, String> get selectedAttributes => {for (final attr in attributes) attr.attributeId: attr.optionId};
 
   Map<String, String> get customAttributeValues => {
     for (final attr in attributes)
       if (attr.optionId == 'other') attr.attributeId: attr.optionName,
   };
 
-  String get createDateTimeString =>
-      DateFormat.MMMd().addPattern(' ').add_Hms().format(createdAt);
+  String get createDateTimeString => DateFormat.MMMd().addPattern(' ').add_Hms().format(createdAt);
 
   String get createTimeString => DateFormat.Hm().format(createdAt);
 
@@ -150,12 +144,8 @@ class OrderObject extends _Object {
   Map<String, Object?> toStashMap() {
     return {
       'note': note,
-      'encodedProducts': jsonEncode(
-        products.map((e) => e.toStashMap()).toList(),
-      ),
-      'encodedAttributes': jsonEncode(
-        attributes.map((e) => e.toStashMap()).toList(),
-      ),
+      'encodedProducts': jsonEncode(products.map((e) => e.toStashMap()).toList()),
+      'encodedAttributes': jsonEncode(attributes.map((e) => e.toStashMap()).toList()),
       'createdAt': Util.toUTC(now: createdAt),
     };
   }
@@ -177,14 +167,8 @@ class OrderObject extends _Object {
       note: order['note'] as String? ?? '',
       productsCount: order['productsCount'] as num? ?? 0,
       productsPrice: order['productsPrice'] as num? ?? 0,
-      products: [
-        for (Map<String, dynamic> product in products)
-          OrderProductObject.fromMap(product, ingredients),
-      ],
-      attributes: [
-        for (Map<String, dynamic> attr in attributes)
-          OrderSelectedAttributeObject.fromMap(attr),
-      ],
+      products: [for (Map<String, dynamic> product in products) OrderProductObject.fromMap(product, ingredients)],
+      attributes: [for (Map<String, dynamic> attr in attributes) OrderSelectedAttributeObject.fromMap(attr)],
       createdAt: Util.fromUTC(order['createdAt'] as int? ?? 0),
     );
   }
@@ -197,12 +181,8 @@ class OrderObject extends _Object {
     return OrderObject(
       id: data['id'] as int?,
       note: data['note'] as String? ?? '',
-      attributes: attributes
-          .map((e) => OrderSelectedAttributeObject.fromStashMap(e))
-          .toList(),
-      products: products
-          .map((e) => OrderProductObject.fromStashMap(e))
-          .toList(),
+      attributes: attributes.map((e) => OrderSelectedAttributeObject.fromStashMap(e)).toList(),
+      products: products.map((e) => OrderProductObject.fromStashMap(e)).toList(),
       createdAt: Util.fromUTC(data['createdAt'] as int? ?? 0),
     );
   }
@@ -296,10 +276,7 @@ class OrderProductObject extends _Object {
   ///
   /// All property make it to optional for easy fetching metadata.
   /// See detailed in [Seller.getOrders].
-  factory OrderProductObject.fromMap(
-    Map<String, dynamic> data,
-    Iterable<Map<String, Object?>> ingredients,
-  ) {
+  factory OrderProductObject.fromMap(Map<String, dynamic> data, Iterable<Map<String, Object?>> ingredients) {
     final id = data['id'] ?? 0;
     // null-safety to make test easy
     return OrderProductObject(
@@ -326,10 +303,7 @@ class OrderProductObject extends _Object {
       count: data['count'],
       singlePrice: data['singlePrice'],
       vatRate: data['vatRate'] as num? ?? 7,
-      ingredients: [
-        for (final ing in data['ingredients'])
-          OrderIngredientObject.fromStashMap(ing),
-      ],
+      ingredients: [for (final ing in data['ingredients']) OrderIngredientObject.fromStashMap(ing)],
     );
   }
 }
@@ -388,10 +362,7 @@ class OrderIngredientObject extends _Object {
 
   @override
   Map<String, Object?> toStashMap() {
-    return {
-      'productIngredientId': productIngredientId,
-      'productQuantityId': productQuantityId,
-    };
+    return {'productIngredientId': productIngredientId, 'productQuantityId': productQuantityId};
   }
 
   /// Create object from DB format.
@@ -416,10 +387,7 @@ class OrderIngredientObject extends _Object {
   }
 
   /// Create object from model.
-  factory OrderIngredientObject.fromModel(
-    ProductIngredient ingredient,
-    String? quantityId,
-  ) {
+  factory OrderIngredientObject.fromModel(ProductIngredient ingredient, String? quantityId) {
     final quantity = quantityId == null ? null : ingredient.getItem(quantityId);
 
     return OrderIngredientObject(
@@ -471,30 +439,17 @@ class OrderSelectedAttributeObject extends _Object {
 
   @override
   Map<String, Object?> toMap() {
-    return {
-      'name': name,
-      'optionName': optionName,
-      'mode': mode.index,
-      'modeValue': modeValue,
-    };
+    return {'name': name, 'optionName': optionName, 'mode': mode.index, 'modeValue': modeValue};
   }
 
   @override
   Map<String, Object?> toStashMap() {
-    return {
-      'attributeId': attributeId,
-      'optionId': optionId,
-      'name': name,
-      'optionName': optionName,
-    };
+    return {'attributeId': attributeId, 'optionId': optionId, 'name': name, 'optionName': optionName};
   }
 
   /// Create object from map.
   factory OrderSelectedAttributeObject.fromMap(Map<String, dynamic> data) {
-    final modeIndex = min(
-      data['mode'] as int? ?? 0,
-      OrderAttributeMode.values.length - 1,
-    );
+    final modeIndex = min(data['mode'] as int? ?? 0, OrderAttributeMode.values.length - 1);
     final mode = OrderAttributeMode.values[max(modeIndex, 0)];
 
     // null-safety to make test easy
@@ -518,10 +473,7 @@ class OrderSelectedAttributeObject extends _Object {
   }
 
   /// Create object from model.
-  factory OrderSelectedAttributeObject.fromModel(
-    OrderAttributeOption option, {
-    String? optionName,
-  }) {
+  factory OrderSelectedAttributeObject.fromModel(OrderAttributeOption option, {String? optionName}) {
     return OrderSelectedAttributeObject(
       name: option.attribute.name,
       optionName: optionName ?? option.name,

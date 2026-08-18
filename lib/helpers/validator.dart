@@ -64,11 +64,7 @@ class Validator {
     };
   }
 
-  static String? Function(String?) isNumber(
-    String fieldName, {
-    bool allowNull = false,
-    FocusNode? focusNode,
-  }) {
+  static String? Function(String?) isNumber(String fieldName, {bool allowNull = false, FocusNode? focusNode}) {
     return (String? value) {
       final number = num.tryParse(value ?? '');
       String? error;

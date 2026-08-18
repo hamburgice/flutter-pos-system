@@ -34,16 +34,12 @@ class HistoryOrderList extends StatelessWidget {
       title: MetaBlock.withString(
         context,
         order.products.map(
-          (product) => product.count == 1
-              ? product.productName
-              : '${product.productName} × ${product.count.toShortString()}',
+          (product) =>
+              product.count == 1 ? product.productName : '${product.productName} × ${product.count.toShortString()}',
         ),
       ),
       subtitle: subtitle,
-      onTap: () => context.pushNamed(
-        Routes.historyOrder,
-        pathParameters: {'id': order.id?.toString() ?? ''},
-      ),
+      onTap: () => context.pushNamed(Routes.historyOrder, pathParameters: {'id': order.id?.toString() ?? ''}),
     );
   }
 }

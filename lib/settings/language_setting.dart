@@ -45,9 +45,7 @@ class LanguageSetting extends Setting<Language?> {
 
     final codes = value.split('_');
 
-    return Language.values.firstWhereOrNull(
-      (e) => e.locale.languageCode == codes[0],
-    );
+    return Language.values.firstWhereOrNull((e) => e.locale.languageCode == codes[0]);
   }
 }
 

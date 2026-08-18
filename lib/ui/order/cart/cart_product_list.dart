@@ -107,9 +107,7 @@ class _CartProductListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = context.watch<CartProduct>();
-    final color = product.isSelected
-        ? Theme.of(context).primaryColorLight
-        : Colors.transparent;
+    final color = product.isSelected ? Theme.of(context).primaryColorLight : Colors.transparent;
 
     final leading = Checkbox(
       key: Key('cart.product.$index.select'),
@@ -124,10 +122,7 @@ class _CartProductListTile extends StatelessWidget {
     final trailing = Wrap(
       crossAxisAlignment: .center,
       children: <Widget>[
-        Text(
-          product.count.toShortString(),
-          key: Key('cart.product.$index.count'),
-        ),
+        Text(product.count.toShortString(), key: Key('cart.product.$index.count')),
         IconButton(
           key: Key('cart.product.$index.add'),
           icon: const Icon(KIcons.entryAdd),
@@ -146,16 +141,11 @@ class _CartProductListTile extends StatelessWidget {
             Cart.instance.priceChanged();
           },
         ),
-        Text(
-          S.orderCartProductPrice(product.totalPrice.toCurrency()),
-          key: Key('cart.product.$index.price'),
-        ),
+        Text(S.orderCartProductPrice(product.totalPrice.toCurrency()), key: Key('cart.product.$index.price')),
       ],
     );
 
-    final subtitle = product.quantities.map(
-      (e) => S.orderCartProductIngredient(e.ingredient.name, e.name),
-    );
+    final subtitle = product.quantities.map((e) => S.orderCartProductIngredient(e.ingredient.name, e.name));
 
     return MergeSemantics(
       child: ListTileTheme.merge(
@@ -167,11 +157,7 @@ class _CartProductListTile extends StatelessWidget {
             leading: leading,
             title: Text(product.name, overflow: .ellipsis),
             subtitle:
-                MetaBlock.withString(
-                  context,
-                  subtitle,
-                  textOverflow: .visible,
-                ) ??
+                MetaBlock.withString(context, subtitle, textOverflow: .visible) ??
                 HintText(S.orderCartProductDefaultQuantity),
             trailing: trailing,
             onTap: () => Cart.instance.toggleAll(false, except: product),

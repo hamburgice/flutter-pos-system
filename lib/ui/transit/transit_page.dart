@@ -17,10 +17,7 @@ class TransitPage extends StatelessWidget {
         children: [
           ListTile(
             key: const Key('transit.excel'),
-            leading: CircleAvatar(
-              radius: 24,
-              child: SvgPicture.asset('assets/excel_icon.svg', width: 24),
-            ),
+            leading: CircleAvatar(radius: 24, child: SvgPicture.asset('assets/excel_icon.svg', width: 24)),
             title: Text(TransitMethod.excel.l10nName),
             subtitle: Text(S.transitDescriptionExcel),
             onTap: () => _next(context, .excel),
@@ -67,10 +64,7 @@ class TransitPage extends StatelessWidget {
     );
 
     if (catalog != null && context.mounted) {
-      context.pushNamed(
-        Routes.transitStation,
-        pathParameters: {'method': method.name, 'catalog': catalog.name},
-      );
+      context.pushNamed(Routes.transitStation, pathParameters: {'method': method.name, 'catalog': catalog.name});
     }
   }
 }

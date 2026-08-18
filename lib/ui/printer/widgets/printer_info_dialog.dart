@@ -9,12 +9,7 @@ class PrinterInfoDialog extends StatelessWidget {
   final BluetoothSignal? signal;
   final PrinterStatus? status;
 
-  const PrinterInfoDialog({
-    super.key,
-    required this.printer,
-    this.signal,
-    this.status,
-  });
+  const PrinterInfoDialog({super.key, required this.printer, this.signal, this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +47,7 @@ class PrinterInfoDialog extends StatelessWidget {
         PopButton(title: MaterialLocalizations.of(context).cancelButtonLabel),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: Text(
-            printer.connected ? S.printerBtnDisconnect : S.printerBtnConnect,
-          ),
+          child: Text(printer.connected ? S.printerBtnDisconnect : S.printerBtnConnect),
         ),
       ],
     );
@@ -71,20 +64,8 @@ const statusIcons = {
   PrinterStatus.good: Icon(Icons.check_circle_outline, color: Colors.green),
   PrinterStatus.writeFailed: Icon(Icons.error_outline, color: Colors.red),
   PrinterStatus.paperNotFound: Icon(Icons.error_outline, color: Colors.red),
-  PrinterStatus.lowBattery: Icon(
-    Icons.warning_amber_outlined,
-    color: Colors.orange,
-  ),
-  PrinterStatus.tooHot: Icon(
-    Icons.warning_amber_outlined,
-    color: Colors.orange,
-  ),
-  PrinterStatus.unknown: Icon(
-    Icons.warning_amber_outlined,
-    color: Colors.orange,
-  ),
-  PrinterStatus.printing: SizedBox.square(
-    dimension: 16,
-    child: CircularProgressIndicator.adaptive(strokeWidth: 2),
-  ),
+  PrinterStatus.lowBattery: Icon(Icons.warning_amber_outlined, color: Colors.orange),
+  PrinterStatus.tooHot: Icon(Icons.warning_amber_outlined, color: Colors.orange),
+  PrinterStatus.unknown: Icon(Icons.warning_amber_outlined, color: Colors.orange),
+  PrinterStatus.printing: SizedBox.square(dimension: 16, child: CircularProgressIndicator.adaptive(strokeWidth: 2)),
 };

@@ -10,11 +10,7 @@ class PrinterReceiptView extends StatelessWidget {
   final OrderObject order;
   final ImageableController controller;
 
-  const PrinterReceiptView({
-    super.key,
-    required this.order,
-    required this.controller,
-  });
+  const PrinterReceiptView({super.key, required this.order, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +19,7 @@ class PrinterReceiptView extends StatelessWidget {
     final discounted = order.products.where((e) => e.isDiscount);
     final attributes = order.attributes
         .where((e) => e.modeValue != null)
-        .map(
-          (e) => [
-            e.optionName,
-            OrderAttributeValueWidget.string(e.mode, e.modeValue!),
-          ],
-        )
+        .map((e) => [e.optionName, OrderAttributeValueWidget.string(e.mode, e.modeValue!)])
         .toList();
     const text = Color(0xFF424242);
 
@@ -39,17 +30,10 @@ class PrinterReceiptView extends StatelessWidget {
         textAlign: .center,
       ),
       const SizedBox(height: 4),
-      Text(
-        DateFormat.yMMMd().addPattern(' ').add_Hms().format(order.createdAt),
-        textAlign: .center,
-      ),
+      Text(DateFormat.yMMMd().addPattern(' ').add_Hms().format(order.createdAt), textAlign: .center),
       const SizedBox(height: 4),
       DefaultTextStyle(
-        style: theme.bodyMedium!.copyWith(
-          height: 1.8,
-          overflow: .clip,
-          color: text,
-        ),
+        style: theme.bodyMedium!.copyWith(height: 1.8, overflow: .clip, color: text),
         child: Table(
           defaultVerticalAlignment: .middle,
           columnWidths: const {
@@ -67,36 +51,18 @@ class PrinterReceiptView extends StatelessWidget {
             TableRow(
               children: [
                 TableCell(child: Text(S.printerReceiptColumnName)),
-                TableCell(
-                  child: Text(S.printerReceiptColumnCount, textAlign: .end),
-                ),
-                TableCell(
-                  child: Text(S.printerReceiptColumnPrice, textAlign: .end),
-                ),
-                TableCell(
-                  child: Text(S.printerReceiptColumnTotal, textAlign: .end),
-                ),
+                TableCell(child: Text(S.printerReceiptColumnCount, textAlign: .end)),
+                TableCell(child: Text(S.printerReceiptColumnPrice, textAlign: .end)),
+                TableCell(child: Text(S.printerReceiptColumnTotal, textAlign: .end)),
               ],
             ),
             for (final product in order.products)
               TableRow(
                 children: [
                   TableCell(child: Text(product.productName)),
-                  TableCell(
-                    child: Text(product.count.toShortString(), textAlign: .end),
-                  ),
-                  TableCell(
-                    child: Text(
-                      product.singlePrice.toCurrency(),
-                      textAlign: .end,
-                    ),
-                  ),
-                  TableCell(
-                    child: Text(
-                      product.totalPrice.toCurrency(),
-                      textAlign: .end,
-                    ),
-                  ),
+                  TableCell(child: Text(product.count.toShortString(), textAlign: .end)),
+                  TableCell(child: Text(product.singlePrice.toCurrency(), textAlign: .end)),
+                  TableCell(child: Text(product.totalPrice.toCurrency(), textAlign: .end)),
                 ],
               ),
           ],
@@ -105,10 +71,7 @@ class PrinterReceiptView extends StatelessWidget {
       const SizedBox(height: 4),
       Table(
         defaultVerticalAlignment: .middle,
-        columnWidths: const {
-          0: FlexColumnWidth(),
-          1: MaxColumnWidth(FractionColumnWidth(0.2), IntrinsicColumnWidth()),
-        },
+        columnWidths: const {0: FlexColumnWidth(), 1: MaxColumnWidth(FractionColumnWidth(0.2), IntrinsicColumnWidth())},
         border: TableBorder.all(width: 0, color: Colors.transparent),
         children: [
           if (discounted.isNotEmpty) ...[
@@ -122,10 +85,7 @@ class PrinterReceiptView extends StatelessWidget {
               TableRow(
                 children: [
                   TableCell(
-                    child: Padding(
-                      padding: const .only(left: 8),
-                      child: Text(product.productName),
-                    ),
+                    child: Padding(padding: const .only(left: 8), child: Text(product.productName)),
                   ),
                   TableCell(
                     child: Text(
@@ -156,10 +116,7 @@ class PrinterReceiptView extends StatelessWidget {
               TableRow(
                 children: [
                   TableCell(
-                    child: Padding(
-                      padding: const .only(left: 8),
-                      child: Text(attr[0]),
-                    ),
+                    child: Padding(padding: const .only(left: 8), child: Text(attr[0])),
                   ),
                   TableCell(
                     child: Text(
@@ -175,10 +132,7 @@ class PrinterReceiptView extends StatelessWidget {
             children: [
               TableCell(child: Text(S.printerReceiptTotal)),
               TableCell(
-                child: Text(
-                  '\$${order.price.toCurrency()}',
-                  style: theme.titleLarge?.copyWith(color: text),
-                ),
+                child: Text('\$${order.price.toCurrency()}', style: theme.titleLarge?.copyWith(color: text)),
               ),
             ],
           ),
@@ -189,10 +143,7 @@ class PrinterReceiptView extends StatelessWidget {
         mainAxisAlignment: .spaceBetween,
         children: [
           DefaultTextStyle(
-            style: theme.bodyMedium!.copyWith(
-              fontSize: theme.labelMedium!.fontSize,
-              color: text,
-            ),
+            style: theme.bodyMedium!.copyWith(fontSize: theme.labelMedium!.fontSize, color: text),
             child: Column(
               mainAxisSize: .min,
               crossAxisAlignment: .start,
@@ -202,10 +153,7 @@ class PrinterReceiptView extends StatelessWidget {
                   padding: const .only(left: 8),
                   child: Column(
                     crossAxisAlignment: .start,
-                    children: [
-                      Text(S.printerReceiptPrice),
-                      Text(S.printerReceiptChange),
-                    ],
+                    children: [Text(S.printerReceiptPrice), Text(S.printerReceiptChange)],
                   ),
                 ),
               ],

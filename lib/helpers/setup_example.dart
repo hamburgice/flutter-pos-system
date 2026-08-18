@@ -104,23 +104,14 @@ Future<void> setupExampleOrderAttrs() async {
       index: 1,
       mode: .statOnly,
       options: {
-        for (final (index, city) in [
-          'Hamburg',
-          'Bremen',
-          'Berlin',
-          'Freiburg',
-        ].indexed)
+        for (final (index, city) in ['Hamburg', 'Bremen', 'Berlin', 'Freiburg'].indexed)
           city.toLowerCase(): OrderAttributeOption(
             id: city.toLowerCase(),
             name: city,
             index: index + 1,
             isDefault: city == 'Hamburg',
           ),
-        'other': OrderAttributeOption(
-          id: 'other',
-          name: S.orderCustomerCityOther,
-          index: 5,
-        ),
+        'other': OrderAttributeOption(id: 'other', name: S.orderCustomerCityOther, index: 5),
       },
     )..prepareItem(),
     OrderAttribute(
@@ -129,17 +120,8 @@ Future<void> setupExampleOrderAttrs() async {
       index: 2,
       mode: .statOnly,
       options: {
-        'pickup': OrderAttributeOption(
-          id: 'pickup',
-          name: S.orderCustomerSaleMethodPickup,
-          index: 1,
-          isDefault: true,
-        ),
-        'shipping': OrderAttributeOption(
-          id: 'shipping',
-          name: S.orderCustomerSaleMethodShipping,
-          index: 2,
-        ),
+        'pickup': OrderAttributeOption(id: 'pickup', name: S.orderCustomerSaleMethodPickup, index: 1, isDefault: true),
+        'shipping': OrderAttributeOption(id: 'shipping', name: S.orderCustomerSaleMethodShipping, index: 2),
       },
     )..prepareItem(),
   ]) {

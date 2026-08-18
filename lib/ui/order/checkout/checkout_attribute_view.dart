@@ -29,21 +29,12 @@ class CheckoutAttributeView extends StatelessWidget {
     );
 
     return SingleChildScrollView(
-      padding: const .fromLTRB(
-        kHorizontalSpacing,
-        kTopSpacing,
-        kHorizontalSpacing,
-        kFABSpacing,
-      ),
+      padding: const .fromLTRB(kHorizontalSpacing, kTopSpacing, kHorizontalSpacing, kFABSpacing),
       child: Column(
         crossAxisAlignment: .start,
         children: [
-          for (final item in OrderAttributes.instance.notEmptyItems)
-            _CheckoutAttributeGroup(item, price),
-          Text(
-            S.orderCheckoutAttributeNoteTitle,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          for (final item in OrderAttributes.instance.notEmptyItems) _CheckoutAttributeGroup(item, price),
+          Text(S.orderCheckoutAttributeNoteTitle, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: kInternalSpacing),
           noteField,
         ],
@@ -60,8 +51,7 @@ class _CheckoutAttributeGroup extends StatefulWidget {
   const _CheckoutAttributeGroup(this.attribute, this.price);
 
   @override
-  State<_CheckoutAttributeGroup> createState() =>
-      _CheckoutAttributeGroupState();
+  State<_CheckoutAttributeGroup> createState() => _CheckoutAttributeGroupState();
 }
 
 class _CheckoutAttributeGroupState extends State<_CheckoutAttributeGroup> {
@@ -95,10 +85,7 @@ class _CheckoutAttributeGroupState extends State<_CheckoutAttributeGroup> {
         ),
         if (widget.attribute.id == 'city' && selectedId == 'other')
           Padding(
-            padding: const .symmetric(
-              horizontal: kHorizontalSpacing,
-              vertical: kInternalSpacing,
-            ),
+            padding: const .symmetric(horizontal: kHorizontalSpacing, vertical: kInternalSpacing),
             child: TextField(
               key: const Key('order.attr.city.other'),
               controller: customValueController,
@@ -107,10 +94,7 @@ class _CheckoutAttributeGroupState extends State<_CheckoutAttributeGroup> {
                 labelText: S.orderCustomerCityOtherLabel,
                 border: OutlineInputBorder(borderRadius: .circular(8.0)),
               ),
-              onChanged: (value) => Cart.instance.updateCustomAttributeValue(
-                widget.attribute.id,
-                value,
-              ),
+              onChanged: (value) => Cart.instance.updateCustomAttributeValue(widget.attribute.id, value),
             ),
           ),
         const SizedBox(height: kInternalLargeSpacing),
@@ -121,12 +105,8 @@ class _CheckoutAttributeGroupState extends State<_CheckoutAttributeGroup> {
   @override
   void initState() {
     super.initState();
-    selectedId =
-        Cart.instance.attributes[widget.attribute.id] ??
-        widget.attribute.defaultOption?.id;
-    customValueController = TextEditingController(
-      text: Cart.instance.customAttributeValues[widget.attribute.id],
-    );
+    selectedId = Cart.instance.attributes[widget.attribute.id] ?? widget.attribute.defaultOption?.id;
+    customValueController = TextEditingController(text: Cart.instance.customAttributeValues[widget.attribute.id]);
   }
 
   @override
@@ -136,10 +116,7 @@ class _CheckoutAttributeGroupState extends State<_CheckoutAttributeGroup> {
   }
 
   void selectOption(OrderAttributeOption option, bool isSelected) {
-    Cart.instance.chooseAttribute(
-      widget.attribute.id,
-      isSelected ? option.id : '',
-    );
+    Cart.instance.chooseAttribute(widget.attribute.id, isSelected ? option.id : '');
 
     widget.price.value = Cart.instance.price;
   }

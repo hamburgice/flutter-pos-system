@@ -24,15 +24,10 @@ class CartProduct extends ChangeNotifier {
 
   /// [product] will set the default [singlePrice] and [quantities] is default
   /// to empty map.
-  CartProduct(
-    this.product, {
-    num count = 1,
-    num? singlePrice,
-    this.isSelected = false,
-    Map<String, String>? quantities,
-  }) : _singlePrice = singlePrice ?? product.price,
-       _count = count,
-       _quantities = quantities ?? <String, String>{};
+  CartProduct(this.product, {num count = 1, num? singlePrice, this.isSelected = false, Map<String, String>? quantities})
+    : _singlePrice = singlePrice ?? product.price,
+      _count = count,
+      _quantities = quantities ?? <String, String>{};
 
   /// product's ID
   String get id => product.id;
@@ -41,8 +36,7 @@ class CartProduct extends ChangeNotifier {
   String get name => product.name;
 
   /// The cost of single product.
-  num get cost =>
-      quantities.fold<num>(product.cost, (v, q) => v + (q.additionalCost));
+  num get cost => quantities.fold<num>(product.cost, (v, q) => v + (q.additionalCost));
 
   /// Total price which is single price times the count.
   num get totalPrice => _count * _singlePrice;
@@ -84,11 +78,7 @@ class CartProduct extends ChangeNotifier {
   num getQuantityPrice(String ingredientId, String? quantityId) {
     if (quantityId == null) return 0;
 
-    return product
-            .getItem(ingredientId)
-            ?.getItem(quantityId)
-            ?.additionalPrice ??
-        0;
+    return product.getItem(ingredientId)?.getItem(quantityId)?.additionalPrice ?? 0;
   }
 
   /// Selected the quantity from cart and affect the price.
@@ -108,9 +98,7 @@ class CartProduct extends ChangeNotifier {
 
   /// Increase product count.
   void increment() {
-    _count = product.isWeightBased
-        ? ((_count + 0.1) * 1000).round() / 1000
-        : _count + 1;
+    _count = product.isWeightBased ? ((_count + 0.1) * 1000).round() / 1000 : _count + 1;
 
     notifyListeners();
   }
@@ -119,9 +107,7 @@ class CartProduct extends ChangeNotifier {
   void decrement() {
     final step = product.isWeightBased ? 0.1 : 1;
     if (_count > step) {
-      _count = product.isWeightBased
-          ? ((_count - step) * 1000).round() / 1000
-          : _count - 1;
+      _count = product.isWeightBased ? ((_count - step) * 1000).round() / 1000 : _count - 1;
     }
 
     notifyListeners();
@@ -167,9 +153,7 @@ class CartProduct extends ChangeNotifier {
       originalPrice: product.price,
       vatRate: product.vatRate,
       isDiscount: _singlePrice < product.price,
-      ingredients: product.items
-          .map((e) => OrderIngredientObject.fromModel(e, getQuantityId(e.id)))
-          .toList(),
+      ingredients: product.items.map((e) => OrderIngredientObject.fromModel(e, getQuantityId(e.id))).toList(),
     );
   }
 }

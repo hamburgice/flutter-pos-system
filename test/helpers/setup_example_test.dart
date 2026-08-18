@@ -18,10 +18,7 @@ void main() {
       await setupExampleOrderAttrs();
       verify(storage.add(any, any, any));
       expect(Menu.instance.itemList, hasLength(3));
-      expect(
-        Menu.instance.itemList.expand((catalog) => catalog.itemList),
-        hasLength(20),
-      );
+      expect(Menu.instance.itemList.expand((catalog) => catalog.itemList), hasLength(20));
 
       await setupExampleMenu();
       await setupExampleOrderAttrs();

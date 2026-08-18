@@ -55,19 +55,14 @@ class _WithTab extends StatelessWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: shell.currentIndex == 0
             ? 0
-            : _bottomNavTabs
-                  .indexWhere((e) => e.branchIndex == shell.currentIndex)
-                  .clamp(0, 3),
+            : _bottomNavTabs.indexWhere((e) => e.branchIndex == shell.currentIndex).clamp(0, 3),
         onDestinationSelected: (index) {
           SpotlightShow.of(context).reset();
           final tab = _bottomNavTabs[index];
           if (tab == .order) {
             shell.goBranch(0, initialLocation: shell.currentIndex == 0);
           } else {
-            shell.goBranch(
-              tab.branchIndex!,
-              initialLocation: tab.branchIndex == shell.currentIndex,
-            );
+            shell.goBranch(tab.branchIndex!, initialLocation: tab.branchIndex == shell.currentIndex);
           }
         },
         destinations: [
@@ -112,10 +107,7 @@ class _WithDrawerState extends State<_WithDrawer> {
 
     return Scaffold(
       key: scaffold,
-      appBar: AppBar(
-        title: Text(S.title(tab.name)),
-        flexibleSpace: const _FlexibleSpace(),
-      ),
+      appBar: AppBar(title: Text(S.title(tab.name)), flexibleSpace: const _FlexibleSpace()),
       drawer: _buildDrawer(tab),
       body: widget.shell,
     );
@@ -138,9 +130,7 @@ class _WithDrawerState extends State<_WithDrawer> {
                     title: Text(S.title(e.name)),
                     selected: tab == e,
                     visualDensity: .compact,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: .all(.circular(8)),
-                    ),
+                    shape: const RoundedRectangleBorder(borderRadius: .all(.circular(8))),
                     onTap: () => _navTo(e),
                   ),
                   _closeDrawer,
@@ -169,10 +159,7 @@ class _WithDrawerState extends State<_WithDrawer> {
     if (tab == .order) {
       context.pushNamed(Routes.order);
     } else {
-      widget.shell.goBranch(
-        tab.branchIndex!,
-        initialLocation: tab.branchIndex == widget.shell.currentIndex,
-      );
+      widget.shell.goBranch(tab.branchIndex!, initialLocation: tab.branchIndex == widget.shell.currentIndex);
     }
   }
 
@@ -207,10 +194,7 @@ class _WithRailState extends State<_WithRail> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.title(tab.name)),
-        flexibleSpace: const _FlexibleSpace(),
-      ),
+      appBar: AppBar(title: Text(S.title(tab.name)), flexibleSpace: const _FlexibleSpace()),
       body: _buildBody(),
     );
   }
@@ -220,10 +204,8 @@ class _WithRailState extends State<_WithRail> {
       children: [
         ListenableBuilder(
           listenable: railExpanded,
-          builder: (context, child) => ListenableBuilder(
-            listenable: railSelected,
-            builder: (context, child) => _buildRail(),
-          ),
+          builder: (context, child) =>
+              ListenableBuilder(listenable: railSelected, builder: (context, child) => _buildRail()),
         ),
         const VerticalDivider(),
         Expanded(child: widget.shell),
@@ -236,17 +218,12 @@ class _WithRailState extends State<_WithRail> {
       extended: railExpanded.value,
       onDestinationSelected: (int index) {
         SpotlightShow.of(context).reset();
-        final tabs = railExpanded.value
-            ? _drawerTabs
-            : _drawerTabs.where((e) => e.important).toList();
+        final tabs = railExpanded.value ? _drawerTabs : _drawerTabs.where((e) => e.important).toList();
         final tab = tabs[index];
         if (tab == .order) {
           context.pushNamed(Routes.order);
         } else {
-          widget.shell.goBranch(
-            tab.branchIndex!,
-            initialLocation: tab.branchIndex == widget.shell.currentIndex,
-          );
+          widget.shell.goBranch(tab.branchIndex!, initialLocation: tab.branchIndex == widget.shell.currentIndex);
           setState(() => railSelected.value = index);
         }
       },
@@ -259,20 +236,14 @@ class _WithRailState extends State<_WithRail> {
         for (final e in _drawerTabs)
           // Show all tabs if expanded, otherwise only show important tabs
           if (railExpanded.value || e.important)
-            NavigationRailDestination(
-              icon: e.icon,
-              selectedIcon: e.selectedIcon,
-              label: e.wrap(Text(S.title(e.name))),
-            ),
+            NavigationRailDestination(icon: e.icon, selectedIcon: e.selectedIcon, label: e.wrap(Text(S.title(e.name)))),
       ],
     );
   }
 
   @override
   void initState() {
-    railExpanded = ValueNotifier(
-      Cache.instance.get<bool>('tutorial.home.order') != true,
-    );
+    railExpanded = ValueNotifier(Cache.instance.get<bool>('tutorial.home.order') != true);
     railSelected = ValueNotifier(widget.shell.currentIndex);
     super.initState();
   }
@@ -289,11 +260,7 @@ class _Nested extends StatelessWidget {
   Widget build(BuildContext context) {
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) => [
-        SliverAppBar(
-          pinned: true,
-          title: Text(title),
-          flexibleSpace: const _FlexibleSpace(),
-        ),
+        SliverAppBar(pinned: true, title: Text(title), flexibleSpace: const _FlexibleSpace()),
       ],
       body: body,
     );
@@ -336,94 +303,36 @@ const _drawerTabs = [
 ];
 
 enum _Tab {
-  order(
-    icon: Icon(Icons.shopping_cart_outlined),
-    selectedIcon: Icon(Icons.shopping_cart),
-    important: true,
-  ),
-  analysis(
-    icon: Icon(Icons.analytics_outlined),
-    selectedIcon: Icon(Icons.analytics),
-    important: true,
-    branchIndex: 0,
-  ),
-  stock(
-    icon: Icon(Icons.inventory_2_outlined),
-    selectedIcon: Icon(Icons.inventory_2),
-    important: true,
-    branchIndex: 1,
-  ),
+  order(icon: Icon(Icons.shopping_cart_outlined), selectedIcon: Icon(Icons.shopping_cart), important: true),
+  analysis(icon: Icon(Icons.analytics_outlined), selectedIcon: Icon(Icons.analytics), important: true, branchIndex: 0),
+  stock(icon: Icon(Icons.inventory_2_outlined), selectedIcon: Icon(Icons.inventory_2), important: true, branchIndex: 1),
   cashier(
     icon: Icon(Icons.monetization_on_outlined),
     selectedIcon: Icon(Icons.monetization_on),
     important: true,
     branchIndex: 2,
   ),
-  orderAttributes(
-    icon: Icon(Icons.assignment_ind_outlined),
-    selectedIcon: Icon(Icons.assignment_ind),
-    branchIndex: 3,
-  ),
-  menu(
-    icon: Icon(Icons.collections_outlined),
-    selectedIcon: Icon(Icons.collections),
-    branchIndex: 4,
-  ),
-  printers(
-    icon: Icon(Icons.print_outlined),
-    selectedIcon: Icon(Icons.print),
-    branchIndex: 5,
-  ),
-  stockQuantities(
-    icon: Icon(Icons.exposure_outlined),
-    selectedIcon: Icon(Icons.exposure),
-    branchIndex: 6,
-  ),
-  transit(
-    icon: Icon(Icons.local_shipping_outlined),
-    selectedIcon: Icon(Icons.local_shipping),
-    branchIndex: 7,
-  ),
-  elf(
-    icon: Icon(Icons.lightbulb_outlined),
-    selectedIcon: Icon(Icons.lightbulb),
-    branchIndex: 8,
-  ),
-  settings(
-    icon: Icon(Icons.settings_outlined),
-    selectedIcon: Icon(Icons.settings),
-    branchIndex: 9,
-  ),
-  debug(
-    icon: Icon(Icons.bug_report_outlined),
-    selectedIcon: Icon(Icons.bug_report),
-    branchIndex: 10,
-  ),
+  orderAttributes(icon: Icon(Icons.assignment_ind_outlined), selectedIcon: Icon(Icons.assignment_ind), branchIndex: 3),
+  menu(icon: Icon(Icons.collections_outlined), selectedIcon: Icon(Icons.collections), branchIndex: 4),
+  printers(icon: Icon(Icons.print_outlined), selectedIcon: Icon(Icons.print), branchIndex: 5),
+  stockQuantities(icon: Icon(Icons.exposure_outlined), selectedIcon: Icon(Icons.exposure), branchIndex: 6),
+  transit(icon: Icon(Icons.local_shipping_outlined), selectedIcon: Icon(Icons.local_shipping), branchIndex: 7),
+  elf(icon: Icon(Icons.lightbulb_outlined), selectedIcon: Icon(Icons.lightbulb), branchIndex: 8),
+  settings(icon: Icon(Icons.settings_outlined), selectedIcon: Icon(Icons.settings), branchIndex: 9),
+  debug(icon: Icon(Icons.bug_report_outlined), selectedIcon: Icon(Icons.bug_report), branchIndex: 10),
 
   /// entrypoint for mobile screen
-  more(
-    icon: Icon(Icons.dehaze_outlined),
-    selectedIcon: Icon(Icons.dehaze),
-    branchIndex: 3,
-  );
+  more(icon: Icon(Icons.dehaze_outlined), selectedIcon: Icon(Icons.dehaze), branchIndex: 3);
 
   final Icon icon;
   final Icon selectedIcon;
   final bool important;
   final int? branchIndex;
 
-  const _Tab({
-    required this.icon,
-    required this.selectedIcon,
-    this.important = false,
-    this.branchIndex,
-  });
+  const _Tab({required this.icon, required this.selectedIcon, this.important = false, this.branchIndex});
 
   static _Tab fromBranch(int index) {
-    return _drawerTabs.firstWhere(
-      (e) => e.branchIndex == index,
-      orElse: () => .analysis,
-    );
+    return _drawerTabs.firstWhere((e) => e.branchIndex == index, orElse: () => .analysis);
   }
 
   Widget wrap(Widget child, [void Function()? action]) {

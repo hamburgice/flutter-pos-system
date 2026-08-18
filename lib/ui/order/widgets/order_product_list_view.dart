@@ -14,11 +14,7 @@ class OrderProductListView extends StatelessWidget {
 
   final ProductListView view;
 
-  const OrderProductListView({
-    super.key,
-    required this.products,
-    required this.view,
-  });
+  const OrderProductListView({super.key, required this.products, required this.view});
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +34,7 @@ class OrderProductListView extends StatelessWidget {
         // each width should between 200 and 320
         return _buildGridView(
           context,
-          Breakpoint.find(
-            box: constraints,
-          ).lookup(compact: 2, medium: 3, expanded: 4, large: 5),
+          Breakpoint.find(box: constraints).lookup(compact: 2, medium: 3, expanded: 4, large: 5),
         );
       },
     );
@@ -84,10 +78,7 @@ class OrderProductListView extends StatelessWidget {
   }
 
   void _onSelected(BuildContext context, Product product) async {
-    final count = await showDialog<num>(
-      context: context,
-      builder: (context) => _ProductQuickAddDialog(product),
-    );
+    final count = await showDialog<num>(context: context, builder: (context) => _ProductQuickAddDialog(product));
     if (count != null) {
       Cart.instance.add(product, count: count);
     }
@@ -130,17 +121,12 @@ class _ProductQuickAddDialogState extends State<_ProductQuickAddDialog> {
           Row(
             mainAxisAlignment: .center,
             children: [
-              Text(
-                count.toShortString(),
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
+              Text(count.toShortString(), style: Theme.of(context).textTheme.headlineSmall),
               IconButton(
                 key: const Key('order.quick_add.increase'),
                 tooltip: S.orderCartProductIncrease,
                 onPressed: () => setState(() {
-                  count = widget.product.isWeightBased
-                      ? ((count + step) * 1000).round() / 1000
-                      : count + 1;
+                  count = widget.product.isWeightBased ? ((count + step) * 1000).round() / 1000 : count + 1;
                 }),
                 icon: const Icon(Icons.add_circle_outline),
               ),
@@ -150,9 +136,7 @@ class _ProductQuickAddDialogState extends State<_ProductQuickAddDialog> {
                 onPressed: count <= step
                     ? null
                     : () => setState(() {
-                        count = widget.product.isWeightBased
-                            ? ((count - step) * 1000).round() / 1000
-                            : count - 1;
+                        count = widget.product.isWeightBased ? ((count - step) * 1000).round() / 1000 : count - 1;
                       }),
                 icon: const Icon(Icons.remove_circle_outline),
               ),

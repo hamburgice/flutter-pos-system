@@ -24,10 +24,7 @@ class SettingsPage extends StatelessWidget {
     const String flavor = .fromEnvironment('appFlavor');
 
     void navigateTo(Feature feature) {
-      context.pushNamed(
-        Routes.settingsFeature,
-        pathParameters: {'feature': feature.name},
-      );
+      context.pushNamed(Routes.settingsFeature, pathParameters: {'feature': feature.name});
     }
 
     return SafeArea(
@@ -57,9 +54,7 @@ class SettingsPage extends StatelessWidget {
                 key: const Key('feature.theme'),
                 leading: const Icon(Icons.palette_outlined),
                 title: Text(S.settingThemeTitle),
-                subtitle: Text(
-                  S.settingThemeName(ThemeSetting.instance.value.name),
-                ),
+                subtitle: Text(S.settingThemeName(ThemeSetting.instance.value.name)),
                 trailing: const Icon(Icons.navigate_next_outlined),
                 onTap: () => navigateTo(.theme),
               );
@@ -86,11 +81,7 @@ class SettingsPage extends StatelessWidget {
                 key: const Key('feature.checkout_warning'),
                 leading: const Icon(Icons.store_mall_directory_outlined),
                 title: Text(S.settingCheckoutWarningTitle),
-                subtitle: Text(
-                  S.settingCheckoutWarningName(
-                    CheckoutWarningSetting.instance.value.name,
-                  ),
-                ),
+                subtitle: Text(S.settingCheckoutWarningName(CheckoutWarningSetting.instance.value.name)),
                 trailing: const Icon(Icons.navigate_next_outlined),
                 onTap: () => navigateTo(.checkoutWarning),
               );
@@ -106,8 +97,7 @@ class SettingsPage extends StatelessWidget {
                 subtitle: Text(S.settingOrderAwakeningDescription),
                 autofocus: focus == 'orderAwakening',
                 value: OrderAwakeningSetting.instance.value,
-                onChanged: (value) =>
-                    OrderAwakeningSetting.instance.update(value),
+                onChanged: (value) => OrderAwakeningSetting.instance.update(value),
               );
             },
           ),
@@ -122,8 +112,7 @@ class SettingsPage extends StatelessWidget {
                 subtitle: Text(S.settingReportDescription),
                 autofocus: focus == 'collectEvents',
                 value: CollectEventsSetting.instance.value,
-                onChanged: (value) =>
-                    CollectEventsSetting.instance.update(value),
+                onChanged: (value) => CollectEventsSetting.instance.update(value),
               );
             },
           ),
@@ -153,9 +142,7 @@ class ItemListScaffold extends StatelessWidget {
               .mapIndexed(
                 (index, pair) => ListTile(
                   title: Text(pair[0]),
-                  trailing: value == index
-                      ? const Icon(Icons.check_outlined)
-                      : null,
+                  trailing: value == index ? const Icon(Icons.check_outlined) : null,
                   subtitle: Text(pair[1], style: hintStyle),
                   onTap: () async {
                     if (value != index) {
@@ -183,9 +170,7 @@ enum Feature {
     return switch (this) {
       .theme => ThemeMode.values.map((e) => S.settingThemeName(e.name)),
       .language => Language.values.map((e) => e.title),
-      .checkoutWarning => CheckoutWarningTypes.values.map(
-        (e) => S.settingCheckoutWarningName(e.name),
-      ),
+      .checkoutWarning => CheckoutWarningTypes.values.map((e) => S.settingCheckoutWarningName(e.name)),
     };
   }
 
@@ -193,9 +178,7 @@ enum Feature {
     return switch (this) {
       .theme => ThemeMode.values.map((e) => ''),
       .language => Language.values.map((e) => ''),
-      .checkoutWarning => CheckoutWarningTypes.values.map(
-        (e) => S.settingCheckoutWarningTip(e.name),
-      ),
+      .checkoutWarning => CheckoutWarningTypes.values.map((e) => S.settingCheckoutWarningTip(e.name)),
     };
   }
 
@@ -219,9 +202,7 @@ enum Feature {
     return switch (this) {
       .theme => ThemeSetting.instance.update(ThemeMode.values[index]),
       .language => LanguageSetting.instance.update(Language.values[index]),
-      .checkoutWarning => CheckoutWarningSetting.instance.update(
-        CheckoutWarningTypes.values[index],
-      ),
+      .checkoutWarning => CheckoutWarningSetting.instance.update(CheckoutWarningTypes.values[index]),
     };
   }
 }

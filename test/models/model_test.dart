@@ -46,17 +46,11 @@ void main() {
       });
 
       test('Option calculatePrice', () {
-        final s1 = OrderAttribute(
-          options: {'so-1': OrderAttributeOption(modeValue: 1)},
-        )..prepareItem();
-        final s2 = OrderAttribute(
-          mode: .changeDiscount,
-          options: {'so-2': OrderAttributeOption(modeValue: 50)},
-        )..prepareItem();
-        final s3 = OrderAttribute(
-          mode: .changePrice,
-          options: {'so-2': OrderAttributeOption(modeValue: 5)},
-        )..prepareItem();
+        final s1 = OrderAttribute(options: {'so-1': OrderAttributeOption(modeValue: 1)})..prepareItem();
+        final s2 = OrderAttribute(mode: .changeDiscount, options: {'so-2': OrderAttributeOption(modeValue: 50)})
+          ..prepareItem();
+        final s3 = OrderAttribute(mode: .changePrice, options: {'so-2': OrderAttributeOption(modeValue: 5)})
+          ..prepareItem();
         num price = 100;
 
         for (var option in s1.items) {
@@ -76,10 +70,7 @@ void main() {
 
   group('Order', () {
     test('Weight-based products accept decimal quantities', () {
-      final weighted = CartProduct(
-        Product(name: 'Dorade Royal · €/kg'),
-        count: 0.5,
-      );
+      final weighted = CartProduct(Product(name: 'Dorade Royal · €/kg'), count: 0.5);
       final piece = CartProduct(Product(name: 'Loup de Mer · Stück'));
 
       weighted.increment();
@@ -144,10 +135,7 @@ void main() {
       when(p4.p.connected).thenReturn(false);
 
       final result = [p1, p2, p3, p4]..sort();
-      expect(
-        result.map((e) => e.name).toList(),
-        equals(['p1', 'p3', 'p2', 'p4']),
-      );
+      expect(result.map((e) => e.name).toList(), equals(['p1', 'p3', 'p2', 'p4']));
     });
   });
 }

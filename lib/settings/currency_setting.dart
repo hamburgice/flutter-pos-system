@@ -41,11 +41,7 @@ class CurrencySetting extends Setting<CurrencyTypes> {
   NumberFormat formatter = _buildFormatter();
 
   static NumberFormat _buildFormatter() {
-    return NumberFormat.currency(
-      locale: 'de_DE',
-      symbol: '€',
-      decimalDigits: 2,
-    );
+    return NumberFormat.currency(locale: 'de_DE', symbol: '€', decimalDigits: 2);
   }
 
   /// Ceiling [value] to currency least value

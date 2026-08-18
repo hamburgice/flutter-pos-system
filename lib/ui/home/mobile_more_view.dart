@@ -18,8 +18,7 @@ class MobileMoreView extends StatefulWidget {
   State<MobileMoreView> createState() => _MobileMoreViewState();
 }
 
-class _MobileMoreViewState extends State<MobileMoreView>
-    with AutomaticKeepAliveClientMixin {
+class _MobileMoreViewState extends State<MobileMoreView> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);

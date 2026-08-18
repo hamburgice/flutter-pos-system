@@ -56,10 +56,7 @@ class Database {
     return batch.commit();
   }
 
-  Future<void> reset(
-    String? table, [
-    Future<void> Function(String path) del = sqflite.deleteDatabase,
-  ]) async {
+  Future<void> reset(String? table, [Future<void> Function(String path) del = sqflite.deleteDatabase]) async {
     if (table == null) {
       return del(await getRootPath());
     }
@@ -67,17 +64,8 @@ class Database {
     await db.delete(table);
   }
 
-  Future<int?> count(
-    String table, {
-    String? where,
-    List<Object>? whereArgs,
-  }) async {
-    final result = await db.query(
-      table,
-      columns: ['COUNT(*)'],
-      where: where,
-      whereArgs: whereArgs,
-    );
+  Future<int?> count(String table, {String? where, List<Object>? whereArgs}) async {
+    final result = await db.query(table, columns: ['COUNT(*)'], where: where, whereArgs: whereArgs);
 
     return sqflite.Sqflite.firstIntValue(result);
   }
@@ -86,21 +74,14 @@ class Database {
     return db.delete(table, where: '$keyName = ?', whereArgs: [id]);
   }
 
-  Future<void> initialize({
-    String? path,
-    sqflite.DatabaseFactory? factory,
-    bool logWhenQuery = false,
-  }) async {
+  Future<void> initialize({String? path, sqflite.DatabaseFactory? factory, bool logWhenQuery = false}) async {
     if (_initialized) return;
     _initialized = true;
 
     factory ??= sqflite.databaseFactory;
     if (logWhenQuery) {
       // ignore: experimental_member_use
-      factory = SqfliteDatabaseFactoryLogger(
-        factory,
-        options: SqfliteLoggerOptions(type: .all),
-      );
+      factory = SqfliteDatabaseFactoryLogger(factory, options: SqfliteLoggerOptions(type: .all));
     }
 
     final databasePath = path ?? await getRootPath();
@@ -131,9 +112,7 @@ class Database {
     return db.insert(table, data);
   }
 
-  Future<T> transaction<T>(
-    Future<T> Function(sqflite.DatabaseExecutor txn) action,
-  ) {
+  Future<T> transaction<T>(Future<T> Function(sqflite.DatabaseExecutor txn) action) {
     return db.transaction<T>(action);
   }
 
@@ -168,12 +147,7 @@ class Database {
         });
   }
 
-  Future<int> update(
-    String table,
-    Object? key,
-    Map<String, Object?> data, {
-    keyName = 'id',
-  }) {
+  Future<int> update(String table, Object? key, Map<String, Object?> data, {keyName = 'id'}) {
     return db.update(table, data, where: '$keyName = ?', whereArgs: [key]);
   }
 
