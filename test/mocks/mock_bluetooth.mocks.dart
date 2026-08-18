@@ -4,10 +4,11 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i5;
-import 'dart:typed_data' as _i7;
-import 'dart:ui' as _i8;
+import 'dart:typed_data' as _i8;
+import 'dart:ui' as _i9;
 
 import 'package:flutter/material.dart' as _i4;
+import 'package:flutter_blue_plus/flutter_blue_plus.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
 import 'package:packages/bluetooth.dart' as _i2;
@@ -26,25 +27,22 @@ import 'package:possystem/components/imageable_container.dart' as _i3;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
-class _FakeFBP_0 extends _i1.SmartFake implements _i2.FBP {
-  _FakeFBP_0(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
+class _FakeBluetoothDevice_0 extends _i1.SmartFake implements _i2.BluetoothDevice {
+  _FakeBluetoothDevice_0(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeBluetoothDevice_1 extends _i1.SmartFake implements _i2.BluetoothDevice {
-  _FakeBluetoothDevice_1(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
+class _FakePrinterManufactory_1 extends _i1.SmartFake implements _i2.PrinterManufactory {
+  _FakePrinterManufactory_1(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakePrinterManufactory_2 extends _i1.SmartFake implements _i2.PrinterManufactory {
-  _FakePrinterManufactory_2(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
+class _FakeImageableController_2 extends _i1.SmartFake implements _i3.ImageableController {
+  _FakeImageableController_2(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeImageableController_3 extends _i1.SmartFake implements _i3.ImageableController {
-  _FakeImageableController_3(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
-}
-
-class _FakeGlobalKey_4<T extends _i4.State<_i4.StatefulWidget>> extends _i1.SmartFake implements _i4.GlobalKey<T> {
-  _FakeGlobalKey_4(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
+class _FakeGlobalKey_3<T extends _i4.State<_i4.StatefulWidget>> extends _i1.SmartFake implements _i4.GlobalKey<T> {
+  _FakeGlobalKey_3(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 /// A class which mocks [Bluetooth].
@@ -56,11 +54,6 @@ class MockBluetooth extends _i1.Mock implements _i2.Bluetooth {
   }
 
   @override
-  _i2.FBP get blue =>
-      (super.noSuchMethod(Invocation.getter(#blue), returnValue: _FakeFBP_0(this, Invocation.getter(#blue)))
-          as _i2.FBP);
-
-  @override
   _i5.Stream<List<_i2.BluetoothDevice>> startScan() =>
       (super.noSuchMethod(Invocation.method(#startScan, []), returnValue: _i5.Stream<List<_i2.BluetoothDevice>>.empty())
           as _i5.Stream<List<_i2.BluetoothDevice>>);
@@ -70,7 +63,7 @@ class MockBluetooth extends _i1.Mock implements _i2.Bluetooth {
       (super.noSuchMethod(
             Invocation.method(#connect, [address]),
             returnValue: _i5.Future<_i2.BluetoothDevice>.value(
-              _FakeBluetoothDevice_1(this, Invocation.method(#connect, [address])),
+              _FakeBluetoothDevice_0(this, Invocation.method(#connect, [address])),
             ),
           )
           as _i5.Future<_i2.BluetoothDevice>);
@@ -113,7 +106,7 @@ class MockPrinter extends _i1.Mock implements _i2.Printer {
   _i2.PrinterManufactory get manufactory =>
       (super.noSuchMethod(
             Invocation.getter(#manufactory),
-            returnValue: _FakePrinterManufactory_2(this, Invocation.getter(#manufactory)),
+            returnValue: _FakePrinterManufactory_1(this, Invocation.getter(#manufactory)),
           )
           as _i2.PrinterManufactory);
 
@@ -126,16 +119,16 @@ class MockPrinter extends _i1.Mock implements _i2.Printer {
           as _i5.Stream<_i2.PrinterStatus>);
 
   @override
-  set device(_i2.BluetoothDevice? _device) =>
-      super.noSuchMethod(Invocation.setter(#device, _device), returnValueForMissingStub: null);
+  set device(_i2.BluetoothDevice? value) =>
+      super.noSuchMethod(Invocation.setter(#device, value), returnValueForMissingStub: null);
 
   @override
-  set writer(_i2.BluetoothCharacteristic? _writer) =>
-      super.noSuchMethod(Invocation.setter(#writer, _writer), returnValueForMissingStub: null);
+  set writer(_i7.BluetoothCharacteristic? value) =>
+      super.noSuchMethod(Invocation.setter(#writer, value), returnValueForMissingStub: null);
 
   @override
-  set reader(_i2.BluetoothCharacteristic? _reader) =>
-      super.noSuchMethod(Invocation.setter(#reader, _reader), returnValueForMissingStub: null);
+  set reader(_i7.BluetoothCharacteristic? value) =>
+      super.noSuchMethod(Invocation.setter(#reader, value), returnValueForMissingStub: null);
 
   @override
   bool get hasListeners => (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false) as bool);
@@ -155,7 +148,7 @@ class MockPrinter extends _i1.Mock implements _i2.Printer {
           as _i5.Future<void>);
 
   @override
-  _i5.Stream<double> draw(_i7.Uint8List? image, {_i2.PrinterDensity? density = _i2.PrinterDensity.normal}) =>
+  _i5.Stream<double> draw(_i8.Uint8List? image, {_i2.PrinterDensity? density = _i2.PrinterDensity.normal}) =>
       (super.noSuchMethod(
             Invocation.method(#draw, [image], {#density: density}),
             returnValue: _i5.Stream<double>.empty(),
@@ -163,11 +156,11 @@ class MockPrinter extends _i1.Mock implements _i2.Printer {
           as _i5.Stream<double>);
 
   @override
-  void addListener(_i8.VoidCallback? listener) =>
+  void addListener(_i9.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]), returnValueForMissingStub: null);
 
   @override
-  void removeListener(_i8.VoidCallback? listener) =>
+  void removeListener(_i9.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]), returnValueForMissingStub: null);
 
   @override
@@ -265,18 +258,18 @@ class MockPrinterManufactory extends _i1.Mock implements _i2.PrinterManufactory 
   int get widthBits => (super.noSuchMethod(Invocation.getter(#widthBits), returnValue: 0) as int);
 
   @override
-  _i7.Uint8List prepare() =>
-      (super.noSuchMethod(Invocation.method(#prepare, []), returnValue: _i7.Uint8List(0)) as _i7.Uint8List);
+  _i8.Uint8List prepare() =>
+      (super.noSuchMethod(Invocation.method(#prepare, []), returnValue: _i8.Uint8List(0)) as _i8.Uint8List);
 
   @override
-  _i7.Uint8List toCommands(_i7.Uint8List? image, {required _i2.PrinterDensity? density}) =>
-      (super.noSuchMethod(Invocation.method(#toCommands, [image], {#density: density}), returnValue: _i7.Uint8List(0))
-          as _i7.Uint8List);
+  _i8.Uint8List toCommands(_i8.Uint8List? image, {required _i2.PrinterDensity? density}) =>
+      (super.noSuchMethod(Invocation.method(#toCommands, [image], {#density: density}), returnValue: _i8.Uint8List(0))
+          as _i8.Uint8List);
 
   @override
   _i5.Future<_i2.PrinterStatus> getStatus({
-    required _i2.BluetoothCharacteristic? writer,
-    required _i2.BluetoothCharacteristic? reader,
+    required _i7.BluetoothCharacteristic? writer,
+    required _i7.BluetoothCharacteristic? reader,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getStatus, [], {#writer: writer, #reader: reader}),
@@ -297,7 +290,7 @@ class MockImageableManger extends _i1.Mock implements _i3.ImageableManger {
   _i3.ImageableController create() =>
       (super.noSuchMethod(
             Invocation.method(#create, []),
-            returnValue: _FakeImageableController_3(this, Invocation.method(#create, [])),
+            returnValue: _FakeImageableController_2(this, Invocation.method(#create, [])),
           )
           as _i3.ImageableController);
 }
@@ -314,7 +307,7 @@ class MockImageableController extends _i1.Mock implements _i3.ImageableControlle
   _i4.GlobalKey<_i4.State<_i4.StatefulWidget>> get key =>
       (super.noSuchMethod(
             Invocation.getter(#key),
-            returnValue: _FakeGlobalKey_4<_i4.State<_i4.StatefulWidget>>(this, Invocation.getter(#key)),
+            returnValue: _FakeGlobalKey_3<_i4.State<_i4.StatefulWidget>>(this, Invocation.getter(#key)),
           )
           as _i4.GlobalKey<_i4.State<_i4.StatefulWidget>>);
 

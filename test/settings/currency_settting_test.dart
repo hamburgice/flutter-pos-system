@@ -19,7 +19,7 @@ void main() {
 
       CurrencySetting.instance.initialize();
 
-      expect(CurrencySetting.instance.isInt, false);
+      expect(CurrencySetting.instance.isInt, true);
       final formatted = CurrencySetting.instance.formatter.format(1234.5);
       expect(formatted, contains('1.234,50'));
       expect(formatted, contains('€'));

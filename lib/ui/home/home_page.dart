@@ -98,7 +98,7 @@ class _WithDrawerState extends State<_WithDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    final tab = _Tab.fromBranch(widget.shell.currentIndex);
+    final _Tab tab = .fromBranch(widget.shell.currentIndex);
     final needNested = tab == .analysis;
 
     // Which means body have [CustomScrollView]
@@ -196,7 +196,7 @@ class _WithRailState extends State<_WithRail> {
 
   @override
   Widget build(BuildContext context) {
-    final tab = _Tab.fromBranch(widget.shell.currentIndex);
+    final _Tab tab = .fromBranch(widget.shell.currentIndex);
     final needNested = tab == .analysis;
 
     // Which means body have [CustomScrollView]
