@@ -26,6 +26,15 @@ class Product extends Model<ProductObject>
   /// Money show to customer/order
   num price;
 
+  /// German VAT rate applied to this product's gross selling price.
+  num vatRate;
+
+  /// Products priced per kilogram accept decimal quantities.
+  bool get isWeightBased {
+    final normalized = name.toLowerCase().replaceAll(' ', '');
+    return normalized.contains('€/kg') || normalized.contains('/kg');
+  }
+
   /// The time added to catalog
   final DateTime createdAt;
 
@@ -45,6 +54,7 @@ class Product extends Model<ProductObject>
     int index = 1,
     this.cost = 0,
     this.price = 0,
+    this.vatRate = 7,
     String? imagePath,
     DateTime? createdAt,
     this.searchedAt,
@@ -78,6 +88,7 @@ class Product extends Model<ProductObject>
       index: object.index!,
       price: object.price!,
       cost: object.cost!,
+      vatRate: object.vatRate!,
       imagePath: object.imagePath,
       createdAt: object.createdAt,
       searchedAt: object.searchedAt,
@@ -145,6 +156,7 @@ class Product extends Model<ProductObject>
     index: index,
     price: price,
     cost: cost,
+    vatRate: vatRate,
     createdAt: createdAt,
     imagePath: imagePath,
     ingredients: items.map((e) => e.toObject()).toList(),

@@ -38,6 +38,9 @@ class Cart extends ChangeNotifier {
   /// Current select attributes.
   final Map<String, String> attributes = {};
 
+  /// Free-text values for attribute options such as "Other city".
+  final Map<String, String> customAttributeValues = {};
+
   /// Current selected product if and only if all selected products are same.
   final ValueNotifier<CartProduct?> selectedProduct = ValueNotifier(null);
 
@@ -62,7 +65,7 @@ class Cart extends ChangeNotifier {
   }
 
   /// The count of all ordered products.
-  int get productCount {
+  num get productCount {
     return products.fold(0, (value, product) => value + product.count);
   }
 
@@ -93,8 +96,8 @@ class Cart extends ChangeNotifier {
   }
 
   /// Add [product] to the cart.
-  void add(Product product) {
-    final p = CartProduct(product, isSelected: true);
+  void add(Product product, {num count = 1}) {
+    final p = CartProduct(product, count: count, isSelected: true);
     products.add(p);
 
     toggleAll(false, except: p);
@@ -108,6 +111,11 @@ class Cart extends ChangeNotifier {
   /// because remove it will choose default one after checkout.
   void chooseAttribute(String attrId, String optionId) {
     attributes[attrId] = optionId;
+    if (optionId != 'other') customAttributeValues.remove(attrId);
+  }
+
+  void updateCustomAttributeValue(String attrId, String value) {
+    customAttributeValues[attrId] = value.trim();
   }
 
   /// Update the note of the order.
@@ -189,6 +197,9 @@ class Cart extends ChangeNotifier {
     attributes
       ..clear()
       ..addAll(order.selectedAttributes);
+    customAttributeValues
+      ..clear()
+      ..addAll(order.customAttributeValues);
     selectedProduct.value = null;
 
     notifyListeners();
@@ -228,11 +239,11 @@ class Cart extends ChangeNotifier {
   }
 
   /// Change the count of selected products.
-  void selectedUpdateCount(int? count) {
+  void selectedUpdateCount(num? count) {
     if (count == null) return;
 
     for (var e in selected) {
-      e.count = count;
+      e.count = e.product.isWeightBased ? count : count.round();
     }
     notifyListeners();
   }
@@ -279,6 +290,7 @@ class Cart extends ChangeNotifier {
   void clear() {
     products.clear();
     attributes.clear();
+    customAttributeValues.clear();
     selectedProduct.value = null;
     note = '';
 
@@ -316,7 +328,9 @@ class Cart extends ChangeNotifier {
       productsPrice: productsPrice,
       note: note,
       products: products.map<OrderProductObject>((e) => e.toObject()).toList(),
-      attributes: selectedAttributeOptions.map((e) => OrderSelectedAttributeObject.fromModel(e)).toList(),
+      attributes: selectedAttributeOptions
+          .map((e) => OrderSelectedAttributeObject.fromModel(e, optionName: customAttributeValues[e.attribute.id]))
+          .toList(),
       createdAt: timer(),
     );
   }

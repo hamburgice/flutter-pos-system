@@ -15,7 +15,7 @@ class CartProduct extends ChangeNotifier {
 
   num _singlePrice;
 
-  int _count;
+  num _count;
 
   /// Ingredient and quantity pairs.
   ///
@@ -24,7 +24,7 @@ class CartProduct extends ChangeNotifier {
 
   /// [product] will set the default [singlePrice] and [quantities] is default
   /// to empty map.
-  CartProduct(this.product, {int count = 1, num? singlePrice, this.isSelected = false, Map<String, String>? quantities})
+  CartProduct(this.product, {num count = 1, num? singlePrice, this.isSelected = false, Map<String, String>? quantities})
     : _singlePrice = singlePrice ?? product.price,
       _count = count,
       _quantities = quantities ?? <String, String>{};
@@ -61,8 +61,8 @@ class CartProduct extends ChangeNotifier {
   }
 
   /// The count of the this product.
-  int get count => _count;
-  set count(int other) {
+  num get count => _count;
+  set count(num other) {
     if (other != _count) {
       _count = other;
       notifyListeners();
@@ -98,7 +98,17 @@ class CartProduct extends ChangeNotifier {
 
   /// Increase product count.
   void increment() {
-    _count += 1;
+    _count = product.isWeightBased ? ((_count + 0.1) * 1000).round() / 1000 : _count + 1;
+
+    notifyListeners();
+  }
+
+  /// Decrease product count without allowing zero or negative quantities.
+  void decrement() {
+    final step = product.isWeightBased ? 0.1 : 1;
+    if (_count > step) {
+      _count = product.isWeightBased ? ((_count - step) * 1000).round() / 1000 : _count - 1;
+    }
 
     notifyListeners();
   }
@@ -141,6 +151,7 @@ class CartProduct extends ChangeNotifier {
       singleCost: cost,
       singlePrice: _singlePrice,
       originalPrice: product.price,
+      vatRate: product.vatRate,
       isDiscount: _singlePrice < product.price,
       ingredients: product.items.map((e) => OrderIngredientObject.fromModel(e, getQuantityId(e.id))).toList(),
     );

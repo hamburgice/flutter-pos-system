@@ -148,6 +148,7 @@ class ProductObject extends ModelObject<Product> {
   final int? index;
   final num? price;
   final num? cost;
+  final num? vatRate;
   final String? imagePath;
   final DateTime? createdAt;
   final DateTime? searchedAt;
@@ -159,6 +160,7 @@ class ProductObject extends ModelObject<Product> {
     this.index,
     this.price,
     this.cost,
+    this.vatRate,
     this.imagePath,
     this.createdAt,
     this.searchedAt,
@@ -175,6 +177,7 @@ class ProductObject extends ModelObject<Product> {
       index: data['index'] as int,
       price: data['price'] as num,
       cost: data['cost'] as num,
+      vatRate: data['vatRate'] as num? ?? 7,
       imagePath: data['imagePath'] as String?,
       createdAt: Util.fromUTC(data['createdAt'] as int),
       searchedAt: searchedAt == null ? null : Util.fromUTC(searchedAt),
@@ -198,6 +201,10 @@ class ProductObject extends ModelObject<Product> {
       model.cost = cost!;
       result['$prefix.cost'] = cost!;
     }
+    if (vatRate != null && vatRate != model.vatRate) {
+      model.vatRate = vatRate!;
+      result['$prefix.vatRate'] = vatRate!;
+    }
     if (name != null && name != model.name) {
       model.name = name!;
       result['$prefix.name'] = name!;
@@ -218,6 +225,7 @@ class ProductObject extends ModelObject<Product> {
     return {
       'price': price!,
       'cost': cost!,
+      'vatRate': vatRate ?? 7,
       'index': index!,
       'name': name!,
       'imagePath': imagePath,

@@ -103,7 +103,7 @@ List<OrderObject> generateOrders({required int orderCount, required DateTime sta
         paid: price + rng.nextInt(100),
         cost: ordered.fold<num>(0, (p, e) => p + e.totalCost),
         price: price,
-        productsCount: ordered.fold<int>(0, (p, e) => p + e.count),
+        productsCount: ordered.fold<num>(0, (p, e) => p + e.count),
         productsPrice: originalPrice,
         attributes: attrs,
         products: ordered,

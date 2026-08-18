@@ -60,9 +60,9 @@ class PrinterReceiptView extends StatelessWidget {
               TableRow(
                 children: [
                   TableCell(child: Text(product.productName)),
-                  TableCell(child: Text(product.count.toString(), textAlign: .end)),
-                  TableCell(child: Text('\$${product.singlePrice.toCurrency()}', textAlign: .end)),
-                  TableCell(child: Text('\$${product.totalPrice.toCurrency()}', textAlign: .end)),
+                  TableCell(child: Text(product.count.toShortString(), textAlign: .end)),
+                  TableCell(child: Text(product.singlePrice.toCurrency(), textAlign: .end)),
+                  TableCell(child: Text(product.totalPrice.toCurrency(), textAlign: .end)),
                 ],
               ),
           ],

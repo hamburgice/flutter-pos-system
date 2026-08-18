@@ -27,6 +27,7 @@ class _ProductModalState extends State<ProductModal> with ItemModal<ProductModal
   late FocusNode _nameFocusNode;
   late FocusNode _priceFocusNode;
   late FocusNode _costFocusNode;
+  late num _vatRate;
 
   String? _image;
 
@@ -37,6 +38,18 @@ class _ProductModalState extends State<ProductModal> with ItemModal<ProductModal
   List<Widget> buildFormFields() {
     return [
       EditImageHolder(path: _image, onSelected: (image) => setState(() => _image = image)),
+      p(
+        DropdownButtonFormField<num>(
+          key: const Key('product.vat_rate'),
+          initialValue: _vatRate,
+          decoration: InputDecoration(labelText: S.menuProductVatRateLabel, filled: false),
+          items: const [
+            DropdownMenuItem(value: 7, child: Text('7%')),
+            DropdownMenuItem(value: 19, child: Text('19%')),
+          ],
+          onChanged: (value) => setState(() => _vatRate = value ?? 7),
+        ),
+      ),
       p(
         TextFormField(
           key: const Key('product.name'),
@@ -105,6 +118,7 @@ class _ProductModalState extends State<ProductModal> with ItemModal<ProductModal
           name: object.name!,
           price: object.price!,
           cost: object.cost!,
+          vatRate: object.vatRate!,
           imagePath: _image,
         );
 
@@ -128,6 +142,7 @@ class _ProductModalState extends State<ProductModal> with ItemModal<ProductModal
     _nameFocusNode = FocusNode();
     _priceFocusNode = FocusNode();
     _costFocusNode = FocusNode();
+    _vatRate = p?.vatRate ?? 7;
     _image = widget.product?.imagePath;
   }
 
@@ -157,6 +172,7 @@ class _ProductModalState extends State<ProductModal> with ItemModal<ProductModal
       imagePath: _image,
       price: num.tryParse(_priceController.text),
       cost: num.tryParse(_costController.text),
+      vatRate: _vatRate,
     );
   }
 }

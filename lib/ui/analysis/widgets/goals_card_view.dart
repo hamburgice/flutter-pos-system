@@ -71,6 +71,7 @@ class _GoalsCardViewState extends State<GoalsCardView> {
                   name: S.analysisGoalsCountTitle,
                   desc: S.analysisGoalsCountDescription,
                   compact: compact,
+                  formatAsCount: true,
                 ),
                 _GoalItem(
                   current: metric.revenue,
@@ -176,6 +177,7 @@ class _GoalItem extends StatelessWidget {
   final TextStyle? style;
 
   final bool compact;
+  final bool formatAsCount;
 
   const _GoalItem({
     required this.name,
@@ -184,6 +186,7 @@ class _GoalItem extends StatelessWidget {
     required this.goal,
     this.style,
     required this.compact,
+    this.formatAsCount = false,
   });
 
   @override
@@ -196,12 +199,12 @@ class _GoalItem extends StatelessWidget {
     );
     final value = RichText(
       text: TextSpan(
-        text: current.toCurrency(),
+        text: formatAsCount ? current.toShortString() : current.toCurrency(),
         style: style?.copyWith(fontSize: 24),
         children: goal != 0
             ? [
                 TextSpan(
-                  text: '／${goal.toCurrency()}',
+                  text: '／${formatAsCount ? goal.toShortString() : goal.toCurrency()}',
                   style: const TextStyle(color: Colors.grey, fontSize: 24),
                 ),
               ]

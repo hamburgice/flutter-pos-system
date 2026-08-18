@@ -23,8 +23,12 @@ class OrderObjectView extends StatelessWidget {
       children: <Widget>[
         HeadTailTile(head: S.orderObjectViewPriceProducts, tail: order.productsPrice.toCurrency()),
         HeadTailTile(head: S.orderObjectViewPriceAttributes, tail: order.attributesPrice.toCurrency()),
-        HeadTailTile(head: S.orderObjectViewCost, tail: order.cost.toCurrency()),
-        HeadTailTile(head: S.orderObjectViewProfit, tail: order.profit.toCurrency()),
+        HeadTailTile(head: S.orderTaxNet(7), tail: order.netAt(7).toCurrency()),
+        HeadTailTile(head: S.orderTaxVat(7), tail: order.vatAt(7).toCurrency()),
+        HeadTailTile(head: S.orderTaxGross(7), tail: order.grossAt(7).toCurrency()),
+        HeadTailTile(head: S.orderTaxNet(19), tail: order.netAt(19).toCurrency()),
+        HeadTailTile(head: S.orderTaxVat(19), tail: order.vatAt(19).toCurrency()),
+        HeadTailTile(head: S.orderTaxGross(19), tail: order.grossAt(19).toCurrency()),
         HeadTailTile(head: S.orderObjectViewPaid, tail: order.paid.toCurrency()),
       ],
     );
@@ -78,7 +82,7 @@ class OrderObjectView extends StatelessWidget {
           attrWidget,
           noteWidget,
           TextDivider(label: S.orderObjectViewDividerProduct),
-          HintText(S.totalCount(order.productsCount)),
+          HintText(S.orderTotalQuantity(order.productsCount.toShortString())),
           for (final product in order.products) _ProductTile(product),
           // padding for ScrollableDraggableSheet on OrderDetailsPage
           const SizedBox(height: 428),
@@ -99,7 +103,6 @@ class _ProductTile extends StatelessWidget {
       title: Text(data.productName),
       subtitle: MetaBlock.withString(context, <String>[
         '${S.orderObjectViewProductPrice}：${data.totalPrice.toCurrency()}',
-        '${S.orderObjectViewProductCost}：${data.totalCost.toCurrency()}',
       ]),
       leading:
           Menu.instance.getProductByName(data.productName)?.avator ??
@@ -108,9 +111,9 @@ class _ProductTile extends StatelessWidget {
       childrenPadding: const .all(8.0),
       children: [
         HeadTailTile(head: S.orderObjectViewProductPrice, tail: data.totalPrice.toCurrency()),
-        HeadTailTile(head: S.orderObjectViewProductCost, tail: data.totalCost.toCurrency()),
-        HeadTailTile(head: S.orderObjectViewProductCount, tail: data.count.toString()),
+        HeadTailTile(head: S.orderObjectViewProductCount, tail: data.count.toShortString()),
         HeadTailTile(head: S.orderObjectViewProductSinglePrice, tail: data.singlePrice.toCurrency()),
+        HeadTailTile(head: S.menuProductVatRateLabel, tail: '${data.vatRate.toShortString()}%'),
         HeadTailTile(head: S.orderObjectViewProductOriginalPrice, tail: data.originalPrice.toCurrency()),
         HeadTailTile(head: S.orderObjectViewProductCatalog, tail: data.catalogName),
         if (data.ingredients.isNotEmpty) const SizedBox(height: 8.0),

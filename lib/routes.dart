@@ -657,6 +657,14 @@ class Routes {
       ],
     ),
     GoRoute(
+      name: analysisMore,
+      path: 'analysis-more',
+      builder: (ctx, state) => Scaffold(
+        appBar: AppBar(leading: const PopButton(), title: Text(S.title('analysis'))),
+        body: _l(const AnalysisView(), state),
+      ),
+    ),
+    GoRoute(
       name: imageGallery,
       path: 'imageGallery',
       pageBuilder: (ctx, state) => MaterialDialogPage(child: _l(const ImageGalleryPage(), state)),
@@ -699,6 +707,7 @@ class Routes {
   static const history = 'history';
   static const historyOrder = 'history.order';
   static const anal = 'anal';
+  static const analysisMore = 'analysis.more';
   static const chartCreate = 'chart.create';
   static const chartUpdate = 'chart.update';
   static const chartReorder = 'chart.reorder';

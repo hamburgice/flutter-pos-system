@@ -113,7 +113,7 @@ void main() {
           await navAndCheck('home.debug', 'debug.list', icon: Icons.bug_report_outlined);
           await navAndCheck('home.menu', 'menu_page', icon: Icons.collections_outlined);
           await navAndCheck('home.printers', 'printers_page', drag: true, icon: Icons.print_outlined);
-          await navAndCheck('home.transit', 'transit.google_sheet', icon: Icons.local_shipping_outlined);
+          await navAndCheck('home.transit', 'transit.excel', icon: Icons.local_shipping_outlined);
           await navAndCheck('home.stockQuantities', 'quantities_page', drag: true, icon: Icons.exposure_outlined);
           await navAndCheck('home.orderAttributes', 'order_attributes_page', icon: Icons.assignment_ind_outlined);
           await navAndCheck('home.elf', 'elf_page', icon: Icons.lightbulb_outlined);
@@ -126,9 +126,16 @@ void main() {
 
           await navAndCheck('home.stock', 'stock.replenisher', pop: false, icon: Icons.inventory_2_outlined);
           await navAndCheck('home.cashier', 'cashier.changer', pop: false, icon: Icons.monetization_on_outlined);
+
+          if (device == .mobile) {
+            await tester.tap(find.byKey(const Key('home.more')));
+            await tester.pumpAndSettle();
+          }
           await navAndCheck('home.analysis', 'anal.history', pop: false, icon: Icons.analytics_outlined);
 
-          await navAndCheck('home.order', 'order.more', openMenu: false);
+          if (device != .mobile) {
+            await navAndCheck('home.order', 'order.more', icon: Icons.shopping_cart_outlined);
+          }
         });
       });
     }
@@ -193,7 +200,7 @@ void main() {
 
             await goNext(tester);
 
-            expect(find.text(S.orderTutorialTitle), findsOneWidget);
+            expect(find.text(S.orderTutorialTitle), findsNothing);
             expect(OrderAttributes.instance.isNotEmpty, isTrue);
             verify(cache.set('tutorial.home.order_attr', true));
           });

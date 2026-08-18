@@ -50,6 +50,7 @@ class LanguageSetting extends Setting<Language?> {
 }
 
 enum Language {
+  de(Locale('de', 'DE'), 'Deutsch'),
   zhTW(Locale('zh', 'TW'), '繁體中文'),
   en(Locale('en'), 'English');
 

@@ -73,6 +73,7 @@ void main() {
 
       test('#findPossibleChange', () async {
         final cashier = Cashier();
+        CurrencySetting.instance.unitList = [10, 100, 500];
         await cashier.setCurrent([
           {'unit': 10},
           {'unit': 100},
@@ -112,6 +113,7 @@ void main() {
 
       test('#paid', () async {
         final cashier = Cashier();
+        CurrencySetting.instance.unitList = [5, 10, 100];
         await cashier.setCurrent([
           {'unit': 5},
           {'unit': 10},

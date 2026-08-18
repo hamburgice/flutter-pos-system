@@ -278,7 +278,7 @@ class Seller extends ChangeNotifier {
 
       return OrderObject.fromMap(
         row,
-        IterableZip([pn, pc]).map((e) => {'productName': e[0], 'count': int.tryParse(e[1])}),
+        IterableZip([pn, pc]).map((e) => {'productName': e[0], 'count': num.tryParse(e[1])}),
       );
     }).toList();
   }

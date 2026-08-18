@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:possystem/helpers/util.dart';
 import 'package:possystem/models/menu/catalog.dart';
 import 'package:possystem/models/menu/product.dart';
 import 'package:possystem/models/menu/product_ingredient.dart';
@@ -105,33 +106,33 @@ void main() {
         'This menu has 3 categories, 4 products.\n'
         '\n'
         'Category 1 is called A and it has 3 products.\n'
-        'Product 1 is called pA, with price at \$2, cost \$2 and it has no ingredient.\n'
-        'Product 2 is called pA2, with price at \$0, cost \$0 and it has 3 ingredients: i1、i2、i5.\n'
+        'Product 1 is called pA, with price at ${(2).toCurrency()}, cost ${(2).toCurrency()} and it has no ingredient.\n'
+        'Product 2 is called pA2, with price at ${(0).toCurrency()}, cost ${(0).toCurrency()} and it has 3 ingredients: i1、i2、i5.\n'
         'Each product requires 2 of i1 and it also has 2 different quantities ：'
-        'q1（quantity 2 with additional price \$2 and cost \$2）、'
-        'q2（quantity 5 with additional price \$-5 and cost \$-5）；'
+        'q1（quantity 2 with additional price ${(2).toCurrency()} and cost ${(2).toCurrency()}）、'
+        'q2（quantity 5 with additional price ${(-5).toCurrency()} and cost ${(-5).toCurrency()}）；'
         '0 of i2 and it is unable to adjust quantity；'
         '0 of i5 and it also has one different quantity ：'
-        'q1（quantity 1 with additional price \$1 and cost \$1）.\n'
-        'Product 3 is called pA3, with price at \$0, cost \$0 and it has no ingredient.\n'
+        'q1（quantity 1 with additional price ${(1).toCurrency()} and cost ${(1).toCurrency()}）.\n'
+        'Product 3 is called pA3, with price at ${(0).toCurrency()}, cost ${(0).toCurrency()} and it has no ingredient.\n'
         '\n'
         'Category 2 is called B and it has no product.\n'
         '\n'
         'Category 3 is called C and it has one product.\n'
-        'Product 1 is called pA4, with price at \$0, cost \$0 and it has no ingredient.',
+        'Product 1 is called pA4, with price at ${(0).toCurrency()}, cost ${(0).toCurrency()} and it has no ingredient.',
       );
 
       expect(
         items.map((e) {
           final map = e.item?.toObject().toMap();
           map?.remove('createdAt');
-          return map.toString();
+          return map;
         }).toList(),
         equals(
           menu.products.map((e) {
             final map = e.toObject().toMap();
             map.remove('createdAt');
-            return map.toString();
+            return map;
           }).toList(),
         ),
       );
@@ -153,7 +154,7 @@ void main() {
         'Ingredient at 1 is called i1, with 0 amount.\n'
         'Ingredient at 2 is called i2, with 1 amount.\n'
         'Ingredient at 3 is called i3, with 1 amount, with a maximum of 2 pieces.\n'
-        'Ingredient at 4 is called i4, with 1 amount and 3 units of it cost \$2 to replenish.',
+        'Ingredient at 4 is called i4, with 1 amount and 3 units of it cost ${(2).toCurrency()} to replenish.',
       );
 
       expect(

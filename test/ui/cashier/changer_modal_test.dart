@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:possystem/constants/icons.dart';
+import 'package:possystem/helpers/util.dart';
 import 'package:possystem/models/repository/cashier.dart';
 import 'package:possystem/routes.dart';
 import 'package:possystem/settings/currency_setting.dart';
@@ -103,7 +104,7 @@ void main() {
           await tester.tap(find.byKey(const Key('changer.apply')));
           await tester.pumpAndSettle();
 
-          expect(find.text(S.cashierChangerErrorNotEnough('10')), findsOneWidget);
+          expect(find.text(S.cashierChangerErrorNotEnough((10).toCurrency())), findsOneWidget);
         });
 
         testWidgets('delete favorite item', (tester) async {
@@ -164,8 +165,8 @@ void main() {
           await tester.enterText(findByK('source.count'), '4');
           await tester.pumpAndSettle();
 
-          expect(getUnitValue(findByK('target.0.unit')), equals(5));
-          expect(getCountValue(findByK('target.0.count')), equals(8));
+          expect(getUnitValue(findByK('target.0.unit')), equals(20));
+          expect(getCountValue(findByK('target.0.count')), equals(2));
 
           // add 4 targets, total targets: 5
           await tester.tap(find.byIcon(KIcons.add));
@@ -188,21 +189,21 @@ void main() {
 
           expect(
             find.text(
-              '${S.cashierChangerErrorInvalidHead(4, '10')}\n'
-              ' •  ${S.cashierChangerErrorInvalidBody(8, '5')}\n'
-              ' •  ${S.cashierChangerErrorInvalidBody(1, '5')}\n'
-              ' •  ${S.cashierChangerErrorInvalidBody(5, '1')}',
+              '${S.cashierChangerErrorInvalidHead(4, (10).toCurrency())}\n'
+              ' •  ${S.cashierChangerErrorInvalidBody(2, (20).toCurrency())}\n'
+              ' •  ${S.cashierChangerErrorInvalidBody(1, (5).toCurrency())}\n'
+              ' •  ${S.cashierChangerErrorInvalidBody(5, (1).toCurrency())}',
             ),
             findsOneWidget,
           );
 
           // apply correctly now!
-          await setCountUnit('target.0', count: '6');
+          await setCountUnit('target.0', unit: '5', count: '6');
           await tester.tap(find.byKey(const Key('changer.apply')));
           await tester.pumpAndSettle();
 
           // should setup current data
-          expect(find.text(S.cashierChangerErrorNotEnough('10')), findsOneWidget);
+          expect(find.text(S.cashierChangerErrorNotEnough((10).toCurrency())), findsOneWidget);
 
           await Cashier.instance.setUnitCount(10, 10);
 
@@ -210,9 +211,13 @@ void main() {
           await tester.pumpAndSettle();
 
           expect(find.byKey(const Key('changer.apply')), findsNothing);
-          expect(Cashier.instance.at(2).count, equals(6));
-          expect(Cashier.instance.at(1).count, equals(7));
-          expect(Cashier.instance.at(0).count, equals(5));
+          int countFor(num unit) {
+            return Cashier.instance.currentUnits.singleWhere((item) => item.unit == unit).count;
+          }
+
+          expect(countFor(10), equals(6));
+          expect(countFor(5), equals(7));
+          expect(countFor(1), equals(5));
         });
       });
     }

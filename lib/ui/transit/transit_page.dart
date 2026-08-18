@@ -16,13 +16,6 @@ class TransitPage extends StatelessWidget {
       child: ListView(
         children: [
           ListTile(
-            key: const Key('transit.google_sheet'),
-            leading: CircleAvatar(radius: 24, child: SvgPicture.asset('assets/google_sheet_icon.svg', width: 24)),
-            title: Text(TransitMethod.googleSheet.l10nName),
-            subtitle: Text(S.transitDescriptionGoogleSheet),
-            onTap: () => _next(context, .googleSheet),
-          ),
-          ListTile(
             key: const Key('transit.excel'),
             leading: CircleAvatar(radius: 24, child: SvgPicture.asset('assets/excel_icon.svg', width: 24)),
             title: Text(TransitMethod.excel.l10nName),

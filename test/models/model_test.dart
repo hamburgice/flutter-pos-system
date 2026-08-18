@@ -4,6 +4,7 @@ import 'package:possystem/models/menu/catalog.dart';
 import 'package:possystem/models/menu/product.dart';
 import 'package:possystem/models/menu/product_ingredient.dart';
 import 'package:possystem/models/objects/stock_object.dart';
+import 'package:possystem/models/objects/order_object.dart';
 import 'package:possystem/models/order/cart_product.dart';
 import 'package:possystem/models/order/order_attribute.dart';
 import 'package:possystem/models/order/order_attribute_option.dart';
@@ -68,6 +69,38 @@ void main() {
   });
 
   group('Order', () {
+    test('Weight-based products accept decimal quantities', () {
+      final weighted = CartProduct(Product(name: 'Dorade Royal · €/kg'), count: 0.5);
+      final piece = CartProduct(Product(name: 'Loup de Mer · Stück'));
+
+      weighted.increment();
+      expect(weighted.count, 0.6);
+      weighted.decrement();
+      expect(weighted.count, 0.5);
+
+      piece.increment();
+      expect(piece.count, 2);
+    });
+
+    test('Order separates 7 and 19 percent VAT from gross prices', () {
+      final order = OrderObject(
+        price: 226,
+        productsPrice: 226,
+        createdAt: DateTime(2026),
+        products: const [
+          OrderProductObject(count: 1, singlePrice: 107, vatRate: 7),
+          OrderProductObject(count: 1, singlePrice: 119, vatRate: 19),
+        ],
+      );
+
+      expect(order.grossAt(7), 107);
+      expect(order.netAt(7), closeTo(100, 0.001));
+      expect(order.vatAt(7), closeTo(7, 0.001));
+      expect(order.grossAt(19), 119);
+      expect(order.netAt(19), closeTo(100, 0.001));
+      expect(order.vatAt(19), closeTo(19, 0.001));
+    });
+
     test('Product rebind', () {
       final product = Product(
         id: 'p-1',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:possystem/helpers/util.dart';
 import 'package:possystem/models/objects/order_object.dart';
 import 'package:possystem/translator.dart';
 import 'package:possystem/ui/transit/exporter/plain_text_exporter.dart';
@@ -33,8 +34,8 @@ void main() {
       OrderSetter.setOrders([order]);
 
       final message = [
-        S.transitFormatTextOrderPrice(1, '40', '20'),
-        S.transitFormatTextOrderMoney('0', '30'),
+        S.transitFormatTextOrderPrice(1, (40).toCurrency(), (20).toCurrency()),
+        S.transitFormatTextOrderMoney((0).toCurrency(), (30).toCurrency()),
         S.transitFormatTextOrderOrderAttribute(
           [
             S.transitFormatTextOrderOrderAttributeItem('oa-1', 'oao-1'),
@@ -50,14 +51,14 @@ void main() {
               'p-1',
               'c-1',
               5,
-              '35',
+              (35).toCurrency(),
               [
                 S.transitFormatTextOrderIngredient(3, 'i-1', 'q-1'),
                 S.transitFormatTextOrderIngredient(0, 'i-2', S.transitFormatTextOrderNoQuantity),
                 S.transitFormatTextOrderIngredient(-5, 'i-3', S.transitFormatTextOrderNoQuantity),
               ].join('、'),
             ),
-            S.transitFormatTextOrderProduct(0, 'p-2', 'c-2', 15, '300', ''),
+            S.transitFormatTextOrderProduct(0, 'p-2', 'c-2', 15, (300).toCurrency(), ''),
           ].join('；\n'),
         ),
       ].join('\n');
@@ -84,8 +85,8 @@ void main() {
 
     test('format', () {
       final expected = [
-        S.transitFormatTextOrderPrice(0, '0', '0'),
-        S.transitFormatTextOrderMoney('0', '0'),
+        S.transitFormatTextOrderPrice(0, (0).toCurrency(), (0).toCurrency()),
+        S.transitFormatTextOrderMoney((0).toCurrency(), (0).toCurrency()),
         S.transitFormatTextOrderProductCount(0, 0, ''),
       ].join('\n');
 

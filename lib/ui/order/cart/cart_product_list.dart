@@ -122,13 +122,22 @@ class _CartProductListTile extends StatelessWidget {
     final trailing = Wrap(
       crossAxisAlignment: .center,
       children: <Widget>[
-        Text(product.count.toString(), key: Key('cart.product.$index.count')),
+        Text(product.count.toShortString(), key: Key('cart.product.$index.count')),
         IconButton(
           key: Key('cart.product.$index.add'),
           icon: const Icon(KIcons.entryAdd),
           tooltip: S.orderCartProductIncrease,
           onPressed: () {
             product.increment();
+            Cart.instance.priceChanged();
+          },
+        ),
+        IconButton(
+          key: Key('cart.product.$index.remove'),
+          icon: const Icon(Icons.remove_circle_outline),
+          tooltip: S.orderCartProductDecrease,
+          onPressed: () {
+            product.decrement();
             Cart.instance.priceChanged();
           },
         ),
@@ -141,7 +150,7 @@ class _CartProductListTile extends StatelessWidget {
     return MergeSemantics(
       child: ListTileTheme.merge(
         selectedColor: DefaultTextStyle.of(context).style.color,
-        child: ColoredBox(
+        child: Material(
           color: color,
           child: ListTile(
             key: Key('cart.product.$index'),

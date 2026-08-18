@@ -31,6 +31,13 @@ class _MobileMoreViewState extends State<MobileMoreView> with AutomaticKeepAlive
             padding: const .only(bottom: 76),
             children: [
               const _HeaderInfoList(),
+              _buildRouteTile(
+                id: 'analysis',
+                icon: Icons.analytics_outlined,
+                route: Routes.analysisMore,
+                title: S.title('analysis'),
+                subtitle: S.analysisGoalsTitle,
+              ),
               if (!isProd)
                 _buildRouteTile(
                   id: 'debug',

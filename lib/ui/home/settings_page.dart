@@ -3,12 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:possystem/components/sign_in_button.dart';
 import 'package:possystem/components/style/outlined_text.dart';
 import 'package:possystem/components/style/pop_button.dart';
 import 'package:possystem/constants/constant.dart';
 import 'package:possystem/routes.dart';
-import 'package:possystem/services/auth.dart';
 import 'package:possystem/settings/checkout_warning.dart';
 import 'package:possystem/settings/collect_events_setting.dart';
 import 'package:possystem/settings/language_setting.dart';
@@ -49,24 +47,6 @@ class SettingsPage extends StatelessWidget {
             },
           ),
           const SizedBox(height: 8.0),
-          Padding(
-            padding: const .symmetric(horizontal: 8.0),
-            child: SignInButton(
-              signedInWidgetBuilder: (user) => Row(
-                mainAxisAlignment: .spaceBetween,
-                children: [
-                  Text(S.settingWelcome(user?.displayName ?? '')),
-                  OutlinedButton(
-                    key: const Key('feature.sign_out'),
-                    onPressed: () async {
-                      await Auth.instance.signOut();
-                    },
-                    child: Text(S.settingLogoutBtn),
-                  ),
-                ],
-              ),
-            ),
-          ),
           ListenableBuilder(
             listenable: ThemeSetting.instance,
             builder: (context, _) {

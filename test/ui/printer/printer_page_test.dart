@@ -49,7 +49,7 @@ void main() {
         when(d.connected).thenReturn(connected);
       }
 
-      mockDevice(notSupport, 'unknown', 'address1', false);
+      mockDevice(notSupport, '', 'address1', false);
       mockDevice(existAndConnected, 'exist', 'address2', true);
       mockDevice(device, 'MX11', 'address3', false);
 
@@ -77,6 +77,16 @@ void main() {
       await tester.tapAt(const Offset(10, 10));
       await tester.pump(const Duration(milliseconds: 10));
 
+      await controller.close();
+      await tester.tap(find.byKey(const Key('pop')).last);
+      await tester.pumpAndSettle();
+      controller = StreamController<List<BluetoothDevice>>();
+      when(blue.startScan()).thenAnswer((_) => controller.stream);
+      await tester.tap(find.text(S.printerTitleCreate));
+      await tester.pump();
+      controller.add([notSupport]);
+      await tester.pump();
+      await tester.pump();
       // tap not support device
       await tester.tap(find.text('<unknown>'));
       await tester.pump(const Duration(milliseconds: 10));
@@ -100,6 +110,10 @@ void main() {
       await controller.close();
       await tester.pump();
       await tester.tap(find.text('MX11'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(S.printerTypeSelectName(PrinterProvider.catPrinter.name)));
+      await tester.pump();
+      await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
 
       // change provider

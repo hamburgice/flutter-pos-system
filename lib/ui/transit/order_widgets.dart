@@ -124,7 +124,7 @@ abstract class TransitOrderList extends StatelessWidget {
       leading: Padding(padding: const .only(top: 4.0), child: Text(order.createTimeString)),
       title: Text(order.createDateTimeString),
       subtitle: MetaBlock.withString(context, [
-        S.transitOrderItemMetaProductCount(order.productsCount),
+        S.transitOrderItemMetaProductCount(order.productsCount.toShortString()),
         S.transitOrderItemMetaPrice(order.price.toCurrency()),
       ]),
       trailing: const Icon(Icons.expand_outlined),
@@ -216,7 +216,7 @@ abstract class TransitOrderHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? subtitle;
-    Widget? trailing;
+    final trailingActions = <Widget>[];
     if (settings != null) {
       subtitle = ValueListenableBuilder(
         valueListenable: settings!,
@@ -228,8 +228,19 @@ abstract class TransitOrderHeader extends StatelessWidget {
         },
       );
 
-      trailing = IconButton(icon: const Icon(Icons.settings_sharp), onPressed: () => _showMetaSetting(context));
+      trailingActions.add(
+        IconButton(icon: const Icon(Icons.settings_sharp), onPressed: () => _showMetaSetting(context)),
+      );
     }
+
+    trailingActions.add(
+      FilledButton.icon(
+        key: const Key('transit.order_export.button'),
+        onPressed: () => _onExport(context),
+        icon: const Icon(Icons.file_download_outlined),
+        label: Text(S.analysisHistoryActionExport),
+      ),
+    );
 
     return Card(
       margin: const .only(left: 8.0, right: 8.0, bottom: 4.0),
@@ -237,7 +248,7 @@ abstract class TransitOrderHeader extends StatelessWidget {
         key: const Key('transit.order_export'),
         title: Text(title),
         subtitle: subtitle,
-        trailing: trailing,
+        trailing: Row(mainAxisSize: .min, children: trailingActions),
         onTap: () => _onExport(context),
       ),
     );

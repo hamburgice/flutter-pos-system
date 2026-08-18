@@ -21,7 +21,7 @@ import '../../test_helpers/translator.dart';
 void main() {
   group('Transit Page', () {
     testWidgets('nav', (tester) async {
-      const keys = ['google_sheet', 'excel', 'csv', 'plain_text'];
+      const keys = ['excel', 'csv', 'plain_text'];
 
       when(cache.get(any)).thenReturn(null);
 

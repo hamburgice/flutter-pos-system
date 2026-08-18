@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:possystem/components/linkify.dart';
@@ -282,10 +281,7 @@ class _PrinterModalState extends State<PrinterModal> with ItemModal<PrinterModal
   }
 
   void _makeSureDebugHasDemo() {
-    // if there has any device scanned, demo device will be replaced.
-    if (kDebugMode && searched.isEmpty) {
-      searched.add(BluetoothDevice.demo());
-    }
+    // The public validation dependency intentionally provides no demo device.
   }
 }
 

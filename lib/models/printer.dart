@@ -31,9 +31,6 @@ class Printers extends ChangeNotifier with Repository<Printer>, RepositoryStorag
 
   Printers() {
     instance = this;
-    if (kDebugMode) {
-      bt.Logger.level = bt.LogLevel.debug;
-    }
   }
 
   @override
@@ -277,14 +274,11 @@ enum PrinterProvider {
   //   bt.EpsonPrinter(),
   //   link: 'https://epson.com/Support/Point-of-Sale/Thermal-Printers/sh/s530',
   // ),
-  xPrinter58(bt.XPrinter(), link: 'https://www.xprinter.net/', markers: ['XP-58', 'XP-76', 'XP-80']),
-  xPrinter76(bt.XPrinter(widthMM: 76, widthBits: 528)),
-  xPrinter80(bt.XPrinter(widthMM: 80, widthBits: 560)),
-  yokoscan58(
-    bt.YokoscanPrinter(widthMM: 58, widthBits: 384),
-    link: 'https://yokoscan.net/product/product.php?class2=184',
-  ),
-  yokoscan80(bt.YokoscanPrinter(widthMM: 80, widthBits: 560));
+  xPrinter58(bt.CatPrinter(), link: 'https://www.xprinter.net/', markers: ['XP-58', 'XP-76', 'XP-80']),
+  xPrinter76(bt.CatPrinter()),
+  xPrinter80(bt.CatPrinter()),
+  yokoscan58(bt.CatPrinter(), link: 'https://yokoscan.net/product/product.php?class2=184'),
+  yokoscan80(bt.CatPrinter());
 
   final PrinterManufactory manufactory;
   final String? link;

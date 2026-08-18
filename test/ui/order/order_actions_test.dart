@@ -121,8 +121,8 @@ void main() {
           OrderProductObject(productId: "p-2", count: 1, singlePrice: 11),
         ],
         attributes: const [
-          OrderSelectedAttributeObject(attributeId: 'oa-1', optionId: 'oao-1'),
-          OrderSelectedAttributeObject(attributeId: 'oa-2', optionId: 'oao-2'),
+          OrderSelectedAttributeObject(attributeId: 'oa-1', optionId: 'oao-1', name: 'oa-1', optionName: 'oao-1'),
+          OrderSelectedAttributeObject(attributeId: 'oa-2', optionId: 'oao-2', name: 'oa-2', optionName: 'oao-2'),
         ],
       );
       Cart.timer = () => now;

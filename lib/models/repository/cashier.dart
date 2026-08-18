@@ -229,7 +229,20 @@ class Cashier extends ChangeNotifier {
 
       _current
         ..clear()
-        ..addAll([for (var unit in record as Iterable) CashierUnitObject.fromMap(unit.cast<String, num>())]);
+        ..addAll([
+          for (var unit in record as Iterable)
+            if ((unit as Map)['unit'] is num && CurrencySetting.instance.unitList.contains(unit['unit']))
+              CashierUnitObject.fromMap(unit.cast<String, num>()),
+        ]);
+      if (_current.length != CurrencySetting.instance.unitList.length) {
+        final counts = {for (final item in _current) item.unit: item.count};
+        _current
+          ..clear()
+          ..addAll([
+            for (final unit in CurrencySetting.instance.unitList)
+              CashierUnitObject(unit: unit, count: counts[unit] ?? 0),
+          ]);
+      }
     } catch (e, stack) {
       if (e is! TypeError) {
         Log.err(e, 'cashier_fetch_unit', stack);
@@ -266,7 +279,11 @@ class Cashier extends ChangeNotifier {
     try {
       _default
         ..clear()
-        ..addAll([for (var item in record) CashierUnitObject.fromMap(item.cast<String, num>())]);
+        ..addAll([
+          for (var item in record)
+            if ((item as Map)['unit'] is num && CurrencySetting.instance.unitList.contains(item['unit']))
+              CashierUnitObject.fromMap(item.cast<String, num>()),
+        ]);
     } catch (e, stack) {
       Log.err(e, 'cashier_fetch_default', stack);
     }

@@ -26,7 +26,9 @@ import 'widgets/order_product_list_view.dart';
 import 'widgets/orientated_view.dart';
 
 class OrderPage extends StatefulWidget {
-  const OrderPage({super.key});
+  final bool embedded;
+
+  const OrderPage({super.key, this.embedded = false});
 
   @override
   State<OrderPage> createState() => _OrderPageState();
@@ -86,22 +88,35 @@ class _OrderPageState extends State<OrderPage> {
             row4: const CartProductStateSelector(),
           );
 
+    final actions = <Widget>[
+      MoreButton(key: const Key('order.more'), onPressed: _showActions),
+      const PrinterButtonView(),
+      TextButton(
+        key: const Key('order.checkout'),
+        onPressed: () => _handleCheckout(),
+        child: Text(S.orderActionCheckout),
+      ),
+    ];
+
+    if (widget.embedded) {
+      return TutorialWrapper(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(mainAxisSize: .min, children: actions),
+            ),
+            Expanded(child: body),
+          ],
+        ),
+      );
+    }
+
     return TutorialWrapper(
       child: Scaffold(
         // avoid resize when keyboard(bottom inset) shows
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: const PopButton(),
-          actions: [
-            MoreButton(key: const Key('order.more'), onPressed: _showActions),
-            const PrinterButtonView(),
-            TextButton(
-              key: const Key('order.checkout'),
-              onPressed: () => _handleCheckout(),
-              child: Text(S.orderActionCheckout),
-            ),
-          ],
-        ),
+        appBar: AppBar(leading: const PopButton(), actions: actions),
         body: body,
       ),
     );

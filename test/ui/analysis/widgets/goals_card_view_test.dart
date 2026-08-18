@@ -50,8 +50,8 @@ void main() {
         'profit': calculator.calculate([for (var i = 0; i < 20; i++) i * 1.2]),
       };
       findText('20／${data['count']!.toInt()}');
-      findText('22／${data['revenue']!.toCurrency()}');
-      findText('24／${data['profit']!.toCurrency()}');
+      findText('${(22).toCurrency()}／${data['revenue']!.toCurrency()}');
+      findText('${(24).toCurrency()}／${data['profit']!.toCurrency()}');
       verify(mockQuery(fortyDaysAgo, tomorrow));
 
       // notify the seller to update the view
