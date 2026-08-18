@@ -201,7 +201,7 @@ void main() {
         verifyMetadata(int count, num price) {
           final w = tester.widget<Expanded>(find.byKey(const Key('cart.metadata')));
           final t =
-              '${S.orderCartMetaTotalCount(count)}${MetaBlock.string}${S.orderCartMetaTotalPrice(price.toCurrency())}';
+              '${S.orderCartMetaTotalCount(count.toShortString())}${MetaBlock.string}${S.orderCartMetaTotalPrice(price.toCurrency())}';
           expect((w.child as RichText).text.toPlainText(), equals(t));
         }
 
@@ -417,7 +417,7 @@ void main() {
       verifyMetadata(int count, num price) {
         final w = tester.widget<Expanded>(find.byKey(const Key('cart.metadata')));
         final t =
-            '${S.orderCartMetaTotalCount(count)}${MetaBlock.string}${S.orderCartMetaTotalPrice(price.toCurrency())}';
+            '${S.orderCartMetaTotalCount(count.toShortString())}${MetaBlock.string}${S.orderCartMetaTotalPrice(price.toCurrency())}';
         expect((w.child as RichText).text.toPlainText(), equals(t));
       }
 

@@ -151,12 +151,15 @@ class _CheckoutAttributeGroupState extends State<_CheckoutAttributeGroup> {
   };
 
   String _optionName(OrderAttributeOption option) {
-    if (widget.attribute.id == 'city' && option.id == 'other')
+    if (widget.attribute.id == 'city' && option.id == 'other') {
       return S.orderCustomerCityOther;
-    if (widget.attribute.id == 'sale-method' && option.id == 'pickup')
+    }
+    if (widget.attribute.id == 'sale-method' && option.id == 'pickup') {
       return S.orderCustomerSaleMethodPickup;
-    if (widget.attribute.id == 'sale-method' && option.id == 'shipping')
+    }
+    if (widget.attribute.id == 'sale-method' && option.id == 'shipping') {
       return S.orderCustomerSaleMethodShipping;
+    }
     return option.name;
   }
 }
