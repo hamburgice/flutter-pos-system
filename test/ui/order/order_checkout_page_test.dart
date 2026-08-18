@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:possystem/helpers/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:possystem/components/imageable_container.dart';
@@ -215,18 +216,16 @@ void main() {
           await tester.pumpAndSettle();
 
           expect(Cart.instance.price, equals(28));
-          expect(find.byKey(const Key('cashier.snapshot.28')), findsOneWidget);
-          expect(find.byKey(const Key('cashier.snapshot.50')), findsOneWidget);
-          expect(find.byKey(const Key('cashier.snapshot.100')), findsOneWidget);
-          expect(find.byKey(const Key('cashier.snapshot.500')), findsOneWidget);
-          expect(find.byKey(const Key('cashier.snapshot.1000'), skipOffstage: false), findsOneWidget);
+          for (final paid in [28, 30, 40]) {
+            expect(find.byKey(Key('cashier.snapshot.$paid'), skipOffstage: false), findsOneWidget);
+          }
 
           await tester.tap(find.byKey(const Key('cashier.snapshot.30')));
           await tester.pumpAndSettle();
 
           // only mobile has this change text and allow to drag
           if (device == .mobile) {
-            expect(find.text(S.orderCheckoutDetailsSnapshotLabelChange('2')), findsOneWidget);
+            expect(find.text(S.orderCheckoutDetailsSnapshotLabelChange((2).toCurrency())), findsOneWidget);
             await tester.drag(find.byKey(const Key('order.details.ds')), const Offset(0, -408));
             await tester.pumpAndSettle();
           }
@@ -254,7 +253,7 @@ void main() {
           await tester.tap(fCKey('clear'));
           await tester.pumpAndSettle();
 
-          expect(tester.widget<Text>(fCKey('paid.hint')).data, equals('28'));
+          expect(tester.widget<Text>(fCKey('paid.hint')).data, equals((28).toCurrency()));
           expect(tester.widget<Text>(fCKey('change.hint')).data, equals('0'));
 
           await tester.tap(fCKey('9'));
@@ -269,7 +268,7 @@ void main() {
             await tester.tapAt(const Offset(400, 161));
             await tester.pumpAndSettle();
 
-            expect(find.text(S.orderCheckoutDetailsSnapshotLabelChange('62')), findsOneWidget);
+            expect(find.text(S.orderCheckoutDetailsSnapshotLabelChange((62).toCurrency())), findsOneWidget);
           }
 
           expect(find.byKey(const Key('cashier.snapshot.90')), findsOneWidget);
@@ -329,7 +328,7 @@ void main() {
           );
           await tester.tap(find.byKey(const Key('order.details.confirm')));
           await tester.pumpAndSettle();
-          expect(find.text(S.actSuccess), findsOneWidget);
+          expect(find.text(S.orderSnackbarCashierNotEnough), findsOneWidget);
 
           expect(Cart.instance.isEmpty, isTrue);
           // navigator popped
@@ -342,8 +341,11 @@ void main() {
               .cashier,
               argThat(
                 predicate((data) {
-                  // 95 - 62
-                  return data is Map && data['.current'][2]['count'] == 3 && data['.current'][0]['count'] == 3;
+                  if (data is! Map) return false;
+                  final current = {
+                    for (final item in data['.current'] as Iterable) (item as Map)['unit']: item['count'],
+                  };
+                  return current[1] == 0 && current[20] == 2;
                 }),
               ),
             ),
@@ -455,11 +457,11 @@ void main() {
               .cashier,
               argThat(
                 predicate((data) {
-                  // 30 + 5 + 3
-                  return data is Map &&
-                      data['.current'][2]['count'] == 3 &&
-                      data['.current'][1]['count'] == 1 &&
-                      data['.current'][0]['count'] == 3;
+                  if (data is! Map) return false;
+                  final current = {
+                    for (final item in data['.current'] as Iterable) (item as Map)['unit']: item['count'],
+                  };
+                  return current[1] == 1 && current[2] == 1 && current[5] == 1 && current[10] == 1 && current[20] == 1;
                 }),
               ),
             ),

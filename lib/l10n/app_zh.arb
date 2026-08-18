@@ -637,7 +637,7 @@
       }
     }
   },
-  "transitFormatTextMenuProduct": "第{index}個產品叫做 {name}，其售價為 {price} 元，成本為 {cost} 元，{details}",
+  "transitFormatTextMenuProduct": "第{index}個產品叫做 {name}，其售價為 {price}，成本為 {cost}，{details}",
   "@transitFormatTextMenuProduct": {
     "description": "Strings are used so that regex can be inserted here during import to obtain information",
     "placeholders": {
@@ -698,7 +698,7 @@
       }
     }
   },
-  "transitFormatTextMenuQuantity": "每份產品改成使用 {amount} 個並調整產品售價 {price} 元和成本 {cost} 元",
+  "transitFormatTextMenuQuantity": "每份產品改成使用 {amount} 個並調整產品售價 {price} 和成本 {cost}",
   "@transitFormatTextMenuQuantity": {
     "description": "Strings are used so that regex can be inserted here during import to obtain information",
     "placeholders": {
@@ -755,7 +755,7 @@
       }
     }
   },
-  "transitFormatTextStockIngredientRestockPrice": "{exist, plural, =0{} other{且每 {quantity} 個成本要價 {price} 元}}",
+  "transitFormatTextStockIngredientRestockPrice": "{exist, plural, =0{} other{且每 {quantity} 個成本要價 {price}}}",
   "@transitFormatTextStockIngredientRestockPrice": {
     "placeholders": {
       "exist": {

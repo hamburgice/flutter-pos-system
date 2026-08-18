@@ -122,6 +122,7 @@ void main() {
                   'p-1': {
                     'price': 10,
                     'cost': 5,
+                    'vatRate': 7,
                     'index': 1,
                     'name': 'p-1',
                     'createdAt': now,
@@ -142,6 +143,7 @@ void main() {
                   'p-2': {
                     'price': 7,
                     'cost': 3,
+                    'vatRate': 7,
                     'index': 2,
                     'name': 'p-2',
                     'createdAt': now,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:possystem/components/meta_block.dart';
 import 'package:possystem/constants/icons.dart';
-import 'package:possystem/helpers/util.dart';
 import 'package:possystem/models/menu/catalog.dart';
 import 'package:possystem/models/menu/product.dart';
 import 'package:possystem/models/menu/product_ingredient.dart';
@@ -160,7 +160,7 @@ void main() {
       );
 
       // correctly transform string
-      expect(find.text('0／${54321.toCurrency()}'), findsOneWidget);
+      expect(find.text('0／${NumberFormat.compact(locale: S.localeName).format(54321)}'), findsOneWidget);
       expect(find.text('0／901'), findsOneWidget);
 
       final ingredient = Stock.instance.items.first;

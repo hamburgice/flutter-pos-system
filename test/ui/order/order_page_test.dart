@@ -137,11 +137,20 @@ void main() {
       );
     }
 
+    Future<void> addProduct(WidgetTester tester, String id) async {
+      await tester.tap(find.byKey(Key('order.product.$id')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('order.quick_add.confirm_checkbox')));
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('order.quick_add.add')));
+      await tester.pumpAndSettle();
+    }
+
     group('Draggable Sheet', () {
       testWidgets('Selecting change state', (tester) async {
         await tester.pumpWidget(buildApp(popResult: () => CheckoutStatus.nothingHappened));
 
-        await tester.tap(find.byKey(const Key('order.product.p-1')));
+        await addProduct(tester, 'p-1');
         await tester.tap(find.byKey(const Key('order.catalog.c-2')));
         await tester.pumpAndSettle();
         // cancel tap
@@ -150,8 +159,7 @@ void main() {
         await gesture.moveBy(const Offset(0.0, 200.0));
         await gesture.cancel();
         // normal tap
-        await tester.tap(find.byKey(const Key('order.product.p-2')));
-        await tester.pumpAndSettle();
+        await addProduct(tester, 'p-2');
         // swipe left and right
         await tester.drag(find.byKey(const Key('order.product.p-2')), const Offset(500.0, 0.0));
         await tester.pumpAndSettle();
@@ -170,7 +178,7 @@ void main() {
             expect(w.badge, equals(item[1]));
           }
           final w = tester.widget<Text>(find.byKey(const Key('cart_snapshot.price')));
-          expect(w.data, equals(price.toString()));
+          expect(w.data, equals(price.toCurrency()));
         }
 
         verifyProductList(int index, {String? title, String? subtitle, bool? selected, int? count, num? price}) {
@@ -325,22 +333,12 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byIcon(Icons.view_list_outlined));
           await tester.pumpAndSettle();
-          await tester.tap(find.byKey(const Key('order.product.p-1')));
+          await addProduct(tester, 'p-1');
           await tester.tap(find.byKey(const Key('order.catalog.c-2')));
           await tester.pumpAndSettle();
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.tap(find.byKey(const Key('order.product.p-2')));
-          await tester.pumpAndSettle();
+          for (var i = 0; i < 12; i++) {
+            await addProduct(tester, 'p-2');
+          }
 
           expect(find.byKey(const Key('cart_snapshot.price')), findsNothing);
           final scrollController = tester.widget<ListView>(find.byKey(const Key('cart.product_list'))).controller!;
@@ -455,10 +453,8 @@ void main() {
       deviceAs(.mobile, tester);
       await tester.pumpWidget(buildApp());
 
-      await tester.tap(find.byKey(const Key('order.product.p-1')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('order.product.p-3')));
-      await tester.pumpAndSettle();
+      await addProduct(tester, 'p-1');
+      await addProduct(tester, 'p-3');
 
       await tester.drag(find.byKey(const Key('order.ds')), const Offset(0, -1200));
       await tester.pumpAndSettle();

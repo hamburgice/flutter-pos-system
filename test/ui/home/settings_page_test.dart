@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,7 +12,6 @@ import 'package:possystem/ui/home/settings_page.dart';
 
 import '../../mocks/mock_auth.dart';
 import '../../mocks/mock_cache.dart';
-import '../../services/auth_test.mocks.dart';
 import '../../test_helpers/firebase_mocker.dart';
 import '../../test_helpers/translator.dart';
 
@@ -36,44 +33,11 @@ void main() {
       );
     }
 
-    testWidgets('Auth sign in and out', (tester) async {
-      final user = MockUser();
-      final controller = StreamController<MockUser?>();
-      when(user.displayName).thenReturn('TestUser');
-      when(auth.authStateChanges()).thenAnswer((_) => controller.stream);
-      when(auth.signOut()).thenAnswer((_) => Future.value());
-
+    testWidgets('cloud authentication is hidden', (tester) async {
       await tester.pumpWidget(buildApp());
 
-      // signin failed
-      when(auth.signIn()).thenAnswer((_) => Future.error('QQ'));
-      await tester.tap(find.byKey(const Key('google_sign_in')));
-      await tester.pumpAndSettle();
-
-      verify(auth.signIn());
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-      expect(find.text('QQ'), findsOneWidget);
-
-      // signin success
-      when(auth.signIn()).thenAnswer((_) => Future.value(true));
-      await tester.tap(find.byKey(const Key('google_sign_in')));
-      await tester.pumpAndSettle();
-
-      verify(auth.signIn());
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
-      controller.add(user);
-      await tester.pumpAndSettle();
-
-      expect(find.text(S.settingWelcome('TestUser')), findsOneWidget);
-
-      // sign out
-      await tester.tap(find.byKey(const Key('feature.sign_out')));
-      controller.add(null);
-      await tester.pumpAndSettle();
-
-      verify(auth.signOut());
-      expect(find.byKey(const Key('google_sign_in')), findsOneWidget);
+      expect(find.byKey(const Key('google_sign_in')), findsNothing);
+      expect(find.byKey(const Key('feature.sign_out')), findsNothing);
     });
 
     testWidgets('select theme', (tester) async {

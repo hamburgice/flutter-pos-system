@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:possystem/constants/icons.dart';
+import 'package:possystem/helpers/util.dart';
 import 'package:possystem/models/objects/order_attribute_object.dart';
 import 'package:possystem/models/order/order_attribute.dart';
 import 'package:possystem/models/order/order_attribute_option.dart';
@@ -214,7 +215,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         tester.widget<TextFormField>(find.byKey(const Key('order_attribute_option.modeValue'))).controller?.text,
-        equals('-10'),
+        equals((-10).toCurrency()),
       );
       await tester.tap(find.byKey(const Key('pop')).last);
       await tester.pumpAndSettle();

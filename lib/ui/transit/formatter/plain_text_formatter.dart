@@ -14,6 +14,12 @@ const _reDig = r' *-?\d+\.?\d*';
 const _reInt = r'[0-9 ]+';
 const _rePre = r'^';
 const _any = '<_ANY_>';
+const _reMoney = r' *-?[\d.]+,\d{2}[\u00a0 ]*€';
+
+String _normalizeMoney(String value) {
+  final trimmed = value.trim();
+  return trimmed.replaceAll(RegExp(r'[^\d,.-]'), '').replaceAll('.', '').replaceAll(',', '.');
+}
 
 ModelFormatter<Repository, String> findPlainTextFormatter(FormattableModel able) {
   final parser = able.toParser();
@@ -107,7 +113,7 @@ class _MenuFormatter extends ModelFormatter<Menu, String> {
     final reProduct = RegExp(
       _rePre +
           S
-              .transitFormatTextMenuProduct(_reInt, r'(?<name>.+)', '(?<price>$_reDig)', '(?<cost>$_reDig)', r'.*')
+              .transitFormatTextMenuProduct(_reInt, r'(?<name>.+)', '(?<price>$_reMoney)', '(?<cost>$_reMoney)', r'.*')
               .replaceAll(r'$', r'\$'),
     );
     final reIngredient = RegExp(S.transitFormatTextMenuIngredient('(?<amount>$_reDig)', r'(?<name>.+?)', r'.*'));
@@ -115,7 +121,7 @@ class _MenuFormatter extends ModelFormatter<Menu, String> {
       _rePre +
           r'(?<name>.+)（' + // hard coded naming pattern
           S
-              .transitFormatTextMenuQuantity('(?<amount>$_reDig)', '(?<price>$_reDig)', '(?<cost>$_reDig)')
+              .transitFormatTextMenuQuantity('(?<amount>$_reDig)', '(?<price>$_reMoney)', '(?<cost>$_reMoney)')
               .replaceAll(r'$', r'\$'),
     );
 
@@ -144,8 +150,8 @@ class _MenuFormatter extends ModelFormatter<Menu, String> {
       if (match != null) {
         addProductIfNeed();
         product = match.namedGroup('name')!;
-        price = match.namedGroup('price')!;
-        cost = match.namedGroup('cost')!;
+        price = _normalizeMoney(match.namedGroup('price')!);
+        cost = _normalizeMoney(match.namedGroup('cost')!);
         foundProduct = true;
         continue;
       }
@@ -172,8 +178,8 @@ class _MenuFormatter extends ModelFormatter<Menu, String> {
             ingredients =
                 '$ingredients\n+ ${match.namedGroup('name')!},'
                 '${match.namedGroup('amount')!},'
-                '${match.namedGroup('price')!},'
-                '${match.namedGroup('cost')!},';
+                '${_normalizeMoney(match.namedGroup('price')!)},'
+                '${_normalizeMoney(match.namedGroup('cost')!)},';
           }
         }
       }
@@ -211,7 +217,7 @@ class _StockFormatter extends ModelFormatter<Stock, String> {
                 S.transitFormatTextStockIngredientRestockPrice(
                   ingredient.restockPrice == null ? 0 : 1,
                   nf.format(ingredient.restockQuantity),
-                  nf.format(ingredient.restockPrice ?? 0),
+                  (ingredient.restockPrice ?? 0).toCurrency(),
                 ),
           ),
       ],
@@ -229,7 +235,7 @@ class _StockFormatter extends ModelFormatter<Stock, String> {
     );
     final reMax = RegExp(S.transitFormatTextStockIngredientMaxAmount(1, '(?<max>$_reDig)'));
     final reRestock = RegExp(
-      S.transitFormatTextStockIngredientRestockPrice(1, '(?<q>$_reDig)', '(?<p>$_reDig)').replaceAll(r'$', r'\$'),
+      S.transitFormatTextStockIngredientRestockPrice(1, '(?<q>$_reDig)', '(?<p>$_reMoney)').replaceAll(r'$', r'\$'),
     );
 
     final result = <List<String>>[];
@@ -249,7 +255,7 @@ class _StockFormatter extends ModelFormatter<Stock, String> {
 
         final restock = reRestock.firstMatch(details);
         if (restock != null) {
-          parsed.add(restock.namedGroup('p')!);
+          parsed.add(_normalizeMoney(restock.namedGroup('p')!));
           parsed.add(restock.namedGroup('q')!);
         }
       }

@@ -539,7 +539,7 @@
       }
     }
   },
-  "transitFormatTextMenuProduct": "Product {index} is called {name}, with price at ${price}, cost ${cost} and {details}",
+  "transitFormatTextMenuProduct": "Product {index} is called {name}, with price at {price}, cost {cost} and {details}",
   "@transitFormatTextMenuProduct": {
     "description": "Strings are used so that regex can be inserted here during import to obtain information",
     "placeholders": {
@@ -600,7 +600,7 @@
       }
     }
   },
-  "transitFormatTextMenuQuantity": "quantity {amount} with additional price ${price} and cost ${cost}",
+  "transitFormatTextMenuQuantity": "quantity {amount} with additional price {price} and cost {cost}",
   "@transitFormatTextMenuQuantity": {
     "description": "Strings are used so that regex can be inserted here during import to obtain information",
     "placeholders": {
@@ -657,7 +657,7 @@
       }
     }
   },
-  "transitFormatTextStockIngredientRestockPrice": "{exist, plural, =0{} other{ and {quantity} units of it cost ${price} to replenish}}",
+  "transitFormatTextStockIngredientRestockPrice": "{exist, plural, =0{} other{ and {quantity} units of it cost {price} to replenish}}",
   "@transitFormatTextStockIngredientRestockPrice": {
     "placeholders": {
       "exist": {

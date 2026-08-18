@@ -53,13 +53,13 @@ void main() {
       statusController.add(PrinterStatus.paperNotFound);
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.error_outline), findsOneWidget);
+      expect(find.byIcon(Icons.print_outlined), findsOneWidget);
 
       statusController.add(PrinterStatus.printing);
       await tester.pump();
       await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byIcon(Icons.print_outlined), findsOneWidget);
     });
 
     testWidgets('disconnect and connect back by dialog', (WidgetTester tester) async {

@@ -38,6 +38,10 @@ void main() {
       );
     }
 
+    int countFor(num unit) {
+      return Cashier.instance.currentUnits.singleWhere((item) => item.unit == unit).count;
+    }
+
     testWidgets('should execute changer', (tester) async {
       await Cashier.instance.setCurrent(<Map<String, num>>[
         {'unit': 1, 'count': 10},
@@ -61,8 +65,8 @@ void main() {
       await tester.tap(find.byKey(const Key('changer.apply')));
       await tester.pumpAndSettle();
 
-      expect(Cashier.instance.at(0).count, 15);
-      expect(Cashier.instance.at(1).count, 4);
+      expect(countFor(1), 15);
+      expect(countFor(5), 4);
       expect(Cashier.instance.favoriteItems.first.hashCode, 0);
       expect('${Cashier.instance.favoriteItems.first.item.source}', 'CashierChangeEntryObject(unit: 5, count: 1)');
     });
@@ -90,8 +94,8 @@ void main() {
 
       await tester.pumpWidget(buildApp());
 
-      expect(Cashier.instance.at(0).count, equals(15));
-      expect(Cashier.instance.at(1).count, equals(4));
+      expect(countFor(1), equals(15));
+      expect(countFor(5), equals(4));
 
       await tester.tap(find.byKey(const Key('cashier.surplus')));
       await tester.pumpAndSettle();
@@ -103,13 +107,13 @@ void main() {
       await tester.tap(find.byKey(const Key('text_dialog.confirm')));
       await tester.pumpAndSettle();
 
-      expect(Cashier.instance.at(0).count, equals(13));
+      expect(countFor(1), equals(13));
 
       await tester.tap(find.byKey(const Key('cashier_surplus.confirm')));
       await tester.pumpAndSettle();
 
-      expect(Cashier.instance.at(0).count, equals(10));
-      expect(Cashier.instance.at(1).count, equals(5));
+      expect(countFor(1), equals(10));
+      expect(countFor(5), equals(4));
     });
 
     testWidgets('should able to set default', (tester) async {
@@ -137,8 +141,8 @@ void main() {
       await tester.tap(find.byKey(const Key('cashier.defaulter')));
       await tester.pumpAndSettle();
 
-      expect(Cashier.instance.at(0).count, equals(13));
-      expect(Cashier.instance.at(1).count, equals(2));
+      expect(countFor(1), equals(13));
+      expect(countFor(5), equals(2));
     });
 
     testWidgets('should show confirm if reset default', (tester) async {
